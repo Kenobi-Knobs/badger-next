@@ -1,33 +1,20 @@
 ﻿import Head from 'next/head'
 import { toast } from "react-toastify";
 import TelegramLoginButton, { TelegramUser } from 'telegram-login-button'
+import { useSession, signIn} from "next-auth/react"
+import { useRouter  } from 'next/router';
 
-export default function Login() {
+export default function LoginPage() {
 	const BotName = process.env.NEXT_PUBLIC_TELEGRAM_BOT_NAME
+	const router = useRouter();
 
 	const handleLogin = async (user: TelegramUser) => {
-		const login = await fetch('/api/checkLoginData', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(user)
-		})
-		const status = await login.status;
-		const data = await login.json()
-		if (status === 200) {
-			//SIGN IN
-		} else {
-			toast.error(data.description, {
-				position: "bottom-center",
-				autoClose: 5000,
-				hideProgressBar: true,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "light",
-			});
+		const signInResponce = await signIn('telegramLogin', { callbackUrl: '/', redirect: false}, user as any)
+		if (signInResponce?.status === 200) {
+			router.push('/')
+		}
+		else {
+			toast.error('Login failed')
 		}
 	}
 

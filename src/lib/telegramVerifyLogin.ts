@@ -12,19 +12,23 @@ type LoginData = {
 	auth_date: number
 }
 
-export const checkLoginData = (data: TelegramUser) => {
+export const CheckLoginData = (data: TelegramUser) => {
 	const { hash, ...dataWithoutHash } = data
-	const checkString = getCheckString(dataWithoutHash)
+	const checkString = GetCheckString(dataWithoutHash)
 	const secret = createHash('sha256')
 		.update(BotToken, 'utf8')
 		.digest()
 	const hashString = createHmac('sha256', secret)
 		.update(checkString, 'utf8')
 		.digest('base64')
-	return hashString !== hash
+	if (hashString !== hash){
+		return dataWithoutHash
+	} else {
+		return null
+	}
 }
 
-const getCheckString = (data: LoginData) => {
+const GetCheckString = (data: LoginData) => {
 	return Object.keys(data)
 		.sort()
 		.map((key) => `${key}=${data[key as keyof LoginData]}`)
