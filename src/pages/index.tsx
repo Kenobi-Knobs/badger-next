@@ -1,20 +1,30 @@
 import { useSession } from "next-auth/react"
 import { signOut } from "next-auth/react"
-import Link from "next/link"
+import { useRouter } from "next/router"
+import RedirectView from "@/components/redirectView"
 
 export default function Home() {
 	const { data: session, status } = useSession()
+	const router = useRouter()
+
+	const handleLogout = async () => {
+		const signOutResponce = await signOut({ redirect: false, callbackUrl: '/login' })
+		router.push(signOutResponce.url)
+	}
 
 	if (status === "authenticated") {
 		return (
 			<>
-				<p>Signed in as</p>
+				<p>Аккаунт</p>
 				<pre>{JSON.stringify(session.user)}</pre>
-				<button onClick={() => signOut()}>Sign out</button>
+				<button onClick={() => handleLogout()}>Вийти</button>
 			</>
 		)
-
 	}
 
-	return <Link href="/login">Sign in</Link>
+	return <RedirectView 
+		text="Авторизуйтесь для використання сервісу"
+		buttonText="Ввійти" 
+		redirect={() => router.push('/login')} 
+	/>
 }
