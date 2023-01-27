@@ -20,8 +20,8 @@ export const authOptions = {
 						await collection.insertOne({
 							id: user.id,
 							name: [user.first_name, user.last_name || ''].join(' '),
-							image: user.photo_url,
-							username: user.username,
+							image: user.photo_url || null,
+							username: user.username || null,
 							registeredAt: new Date(),
 						});
 					} else {
