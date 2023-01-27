@@ -1,13 +1,17 @@
-import { useSession } from "next-auth/react"
-import { signOut } from "next-auth/react"
-import { useRouter } from "next/router"
-import RedirectView from "@/components/redirectView"
+import { useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import RedirectView from '@/components/RedirectView'
+import LoadingView from '@/components/LoadingView'
+import { useState } from 'react'
 
 export default function Home() {
 	const { data: session, status } = useSession()
 	const router = useRouter()
+	const [loading, setLoading] = useState(false)
 
 	const handleLogout = async () => {
+		setLoading(true)
 		const signOutResponce = await signOut({ redirect: false, callbackUrl: '/login' })
 		router.push(signOutResponce.url)
 	}
@@ -20,6 +24,10 @@ export default function Home() {
 				<button onClick={() => handleLogout()}>Вийти</button>
 			</>
 		)
+	}
+
+	if (status === "loading" || loading) {
+		return <LoadingView />
 	}
 
 	return <RedirectView 

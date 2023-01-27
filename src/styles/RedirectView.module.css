@@ -1,0 +1,28 @@
+﻿.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.descriptionText {
+	font-size: 1.2rem;
+	margin-bottom: 40px;
+}
+
+.redirectButton {
+	font-family: 'Rubik', sans-serif;
+	background-color: white;
+	font-size: 0.9rem;
+	border: 1px solid #000;
+	border-radius: 12px;
+	padding: 10px 30px;
+	cursor: pointer;
+}
+
+.redirectButton:hover {
+	background-color: #000;
+	color: white;
+	transition-duration: 0.5s;
+}
