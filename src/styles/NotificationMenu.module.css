@@ -1,0 +1,40 @@
+﻿.notificationButton {
+	width: 25px;
+	height: 25px;
+	background-color: #ffffff;
+	border-radius: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.25));
+	cursor: pointer;
+}
+
+.indication {
+	width: 5px;
+	height: 5px;
+	border-radius: 100%;
+	background-color: #ff3d3d;
+	position: fixed;
+	top: 0px;
+	left: 18px;
+}
+
+.notificationContainer {
+	width: 300px;
+	max-height: 400px;
+	position: fixed;
+	top: 64px;
+	right: 80px;
+	background-color: #fff;
+	border-radius: 6px;
+	filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.25));
+}
+
+.noNotifications {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 60px;
+	font-size: 0.8rem;
+}
