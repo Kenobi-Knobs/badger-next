@@ -4,6 +4,8 @@ import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import LoadingView from '@/components/LoadingView'
 import { useState } from 'react'
+import styles from '../styles/Home.module.css'
+import Header from '@/components/Header'
 
 export default function Home() {
 	const { data: session, status } = useSession()
@@ -24,11 +26,14 @@ export default function Home() {
 
 	if (status === "authenticated") {
 		return (
-			<>
-				<p>Аккаунт</p>
-				<pre>{JSON.stringify(session.user)}</pre>
-				<button onClick={() => handleLogout()}>Вийти</button>
-			</>
+			<div className={styles.pageContainer}>
+				<div className='navigation'></div>
+				<Header
+					session={session}
+					handleLogout={handleLogout}
+					welcome={true}>
+				</Header>
+			</div>
 		)
 	}
 
