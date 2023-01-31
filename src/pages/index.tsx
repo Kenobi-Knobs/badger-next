@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react'
+import { useEffect } from 'react'
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import RedirectView from '@/components/RedirectView'
 import LoadingView from '@/components/LoadingView'
 import { useState } from 'react'
 
@@ -9,6 +9,12 @@ export default function Home() {
 	const { data: session, status } = useSession()
 	const router = useRouter()
 	const [loading, setLoading] = useState(false)
+
+	useEffect(() => {
+		if (status === "unauthenticated") {
+			router.push('/login')
+		}
+	}, [status])
 
 	const handleLogout = async () => {
 		setLoading(true)
@@ -29,10 +35,4 @@ export default function Home() {
 	if (status === "loading" || loading) {
 		return <LoadingView />
 	}
-
-	return <RedirectView 
-		text="Авторизуйтесь для використання сервісу"
-		buttonText="Ввійти" 
-		redirect={() => router.push('/login')} 
-	/>
 }
