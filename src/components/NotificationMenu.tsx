@@ -23,6 +23,33 @@ const ProfileMenu = (props: any) => {
 		if (unread.length > 0) setIndication(true);
 	}
 
+	const openNotification = () => {
+		if (!notificationsOpen) {
+			getNotifications();
+			markNotificationsAsRead();
+			setNotificationOpen(true);
+		} else {
+			setNotificationOpen(false);
+		}
+	}
+
+	const markNotificationsAsRead = async () => {
+		const unreadNotifications = notifications.filter((notification: any) => !notification.read);
+		if (unreadNotifications.length === 0) return;
+		const notificationIds = unreadNotifications.map((notification: any) => notification._id);
+
+		await fetch('/api/readNotifications', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`
+			},
+			body: JSON.stringify({ readNotifications: notificationIds })
+		});
+
+		setIndication(false);
+	}
+
 	const deleteNotification = async (id: string) => {
 		await fetch('/api/deleteNotification', {
 			method: 'POST',
@@ -45,7 +72,6 @@ const ProfileMenu = (props: any) => {
 
 	useEffect(() => {
 		if (!notificationsOpen) return;
-		getNotifications();
 		const handleClickOutside = (event: any) => {
 			if (menu.current && !menu.current.contains(event.target)) {
 				if (event.target.className !== styles.notificationClose && event.target.className !== styles.notificationCloseIcon) {
@@ -69,7 +95,7 @@ const ProfileMenu = (props: any) => {
 
 	return (
 		<div ref={menu}>
-			<div className={styles.notificationButton} onClick={() => setNotificationOpen(!notificationsOpen)}>
+			<div className={styles.notificationButton} onClick={() => {openNotification()}}>
 				<img src='/bell.svg'/>
 				{indication && <div className={styles.indication}></div>}
 			</div>

@@ -1,4 +1,5 @@
 ﻿import clientPromise from '@/lib/mongodb'
+import { ObjectId } from 'bson';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getToken } from "next-auth/jwt"
 
@@ -29,8 +30,10 @@ export default async function handler(
 	const readNotifications = req.body.readNotifications;
 	const userId = token.uid;
 
+	const objectIds = readNotifications.map((id : any) => new ObjectId(id));
+
 	await db.collection('notifications').updateMany(
-		{userId: userId, _id: {$in: readNotifications}},
+		{userId: userId, _id: {$in: objectIds}},
 		{$set: {read: true}}
 	);
 
