@@ -36,12 +36,18 @@
 }
 
 .menuItemText {
-	margin-left: 0.5rem;
-	margin-right: 0.5rem;
+	margin-left: 0.4rem;
+	margin-right: 0.4rem;
+	font-size: 0.8rem;
 }
 
 .menuItem:hover {
 	background-color: #ebebeb;
 	transition-duration: 0.5s;
 	border-radius: 12px;
+}
+
+.menuItemIcon {
+	width: 0.8rem;
+	height: 0.8rem;
 }

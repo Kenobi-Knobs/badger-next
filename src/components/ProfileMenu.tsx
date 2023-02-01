@@ -11,7 +11,6 @@ const ProfileMenu = (props: any) => {
 		if (!menuOpen) return;
 
 		const handleClickOutside = (event: any) => {
-			console.log(menu.current.contains(event.target));
 			if (menu.current && !menu.current.contains(event.target)) {
 				setMenuOpen(false);
 			}
