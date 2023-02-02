@@ -1,0 +1,81 @@
+﻿.navigationContainer {
+	width: 24rem;
+	height: 96vh;
+	background-color: #ffffff;
+	filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.25));
+	border-radius: 12px;
+	margin-top: 10px;
+	margin-left: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.navigationHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	padding: 0px 20px;
+	flex-direction: column;
+}
+
+.logo {
+	margin-top: 20px;
+	margin-bottom: 60px;
+	margin-left: 20px;
+}
+
+.navigationMenu {
+	display: flex;
+	width: -webkit-fill-available;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	padding: 0px 10px;
+}
+
+.navigationMenuItem {
+	display: flex;
+	border-radius: 12px;
+	justify-content: flex-start;
+	align-items: center;
+	width: 95%;
+	height: 40px;
+	margin-bottom: 15px;
+	text-decoration: none;
+	color: #7b7b7b;
+	padding-left: 15px;
+}
+
+.navigationMenuItem:hover {
+	background-color: #ededed;
+	transition-duration: 0.5s;
+}
+
+.navigationItemIcon {
+	margin-right: 15px;
+}
+
+.navigationMenuItemText {
+	font-size: 0.9rem;
+	font-weight: 500;
+}
+
+.navigationFooter {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-end;
+	padding: 5px 20px;
+	height: 60px;
+	flex-direction: row;
+}
+
+.navigationSocialLinkItem {
+	margin-right: 5px;
+	cursor: pointer;
+}
+
+.active {
+	background-color: #ededed;
+	cursor: default;
+}

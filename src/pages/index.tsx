@@ -6,6 +6,7 @@ import LoadingView from '@/components/LoadingView'
 import { useState } from 'react'
 import styles from '../styles/Home.module.css'
 import Header from '@/components/Header'
+import Navigation from '@/components/Navigation'
 
 export default function Home() {
 	const { data: session, status } = useSession()
@@ -27,7 +28,7 @@ export default function Home() {
 	if (status === "authenticated") {
 		return (
 			<div className={styles.pageContainer}>
-				<div className='navigation'></div>
+				<Navigation current="home"></Navigation>
 				<Header
 					session={session}
 					handleLogout={handleLogout}
