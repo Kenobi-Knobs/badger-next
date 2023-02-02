@@ -19,7 +19,7 @@ export const authOptions = {
 					if (!userExists) {
 						await collection.insertOne({
 							id: user.id,
-							name: [user.first_name, user.last_name || ''].join(' '),
+							name: [user.first_name, user.last_name || ''].join(' ').trim(),
 							image: user.photo_url || null,
 							username: user.username || null,
 							registeredAt: new Date(),
