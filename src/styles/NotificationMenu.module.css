@@ -111,11 +111,6 @@
 	cursor: pointer;
 }
 
-.notificationCloseIcon {
-	width: 6px;
-	height: 6px;
-}
-
 .archiveLink {
 	font-size: 0.7rem;
 	color: #618eff;

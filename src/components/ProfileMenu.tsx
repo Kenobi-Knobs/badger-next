@@ -1,4 +1,5 @@
-﻿import React from 'react';
+﻿import Image from 'next/image';
+import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/ProfileMenu.module.css'
 
@@ -22,12 +23,25 @@ const ProfileMenu = (props: any) => {
 	return (
 		<div className={styles.userContainer} ref={menu}>
 			<div className={styles.userImageContainer}>
-				<img className={styles.userImage} src={user.image} onClick={() => setMenuOpen(b => !b)}/>
+				<Image 
+					className={styles.userImage}
+					src={user.image}
+					alt="user image"
+					width={40}
+					height={40}
+					onClick={() => setMenuOpen(b => !b)}
+				/>
 			</div>
 			{menuOpen && <div className={styles.menuContainer}>
 				<div className={styles.menuItem} onClick={() => handleLogout()}>
 					<div className={styles.menuItemText}>Вихід</div>
-					<img className={styles.menuItemIcon} src="/log-out.svg"/>
+					<Image
+						className={styles.menuItemIcon}
+						src="/log-out.svg"
+						alt="log out icon"
+						width={20}
+						height={20}
+					/>
 				</div>
 			</div>}
 		</div>

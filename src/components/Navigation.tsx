@@ -1,4 +1,5 @@
-﻿import Link from 'next/link';
+﻿import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 import styles from '../styles/Navigation.module.css'
 
@@ -13,29 +14,29 @@ const Navigation = (props: any) => {
 					<Link href="/" className={`${ current == 'home' 
 						? styles.navigationMenuItem + ' ' + styles.active 
 						: styles.navigationMenuItem}`}>
-						<img src='/home.svg' className={styles.navigationItemIcon}></img>
+						<Image src='/home.svg' className={styles.navigationItemIcon} width={24} height={24} alt={'home'}/>
 						<div className={styles.navigationMenuItemText}>Головна</div>
 					</Link>
 					<Link href="/market" className={`${ current == 'market' 
 						? styles.navigationMenuItem + ' ' + styles.active 
 						: styles.navigationMenuItem}`}>
-						<img src='/market.svg' className={styles.navigationItemIcon}></img>
+						<Image src='/market.svg' className={styles.navigationItemIcon} width={24} height={24} alt={'market'}/>
 						<div className={styles.navigationMenuItemText}>Застосунки</div>
 					</Link>
 					<Link href="/settings" className={`${ current == 'settings' 
 						? styles.navigationMenuItem + ' ' + styles.active 
 						: styles.navigationMenuItem}`}>
-						<img src='/settings.svg' className={styles.navigationItemIcon}></img>
+						<Image src='/settings.svg' className={styles.navigationItemIcon} width={24} height={24} alt={'settings'}/>
 						<div className={styles.navigationMenuItemText}>Налаштування</div>
 					</Link>
 				</div>
 			</div>
 			<div className={styles.navigationFooter}>
 				<div className={styles.navigationSocialLinkItem}>
-					<img src='/telegram-logo.svg' className={styles.navigationSocialLinkItemIcon}></img>
+					<Image src='/telegram-logo.svg' className={styles.navigationSocialLinkItemIcon} width={16} height={16} alt={'telegram'}/>
 				</div>
 				<div className={styles.navigationSocialLinkItem}>
-					<img src='/github-logo.svg' className={styles.navigationSocialLinkItemIcon}></img>
+					<Image src='/github-logo.svg' className={styles.navigationSocialLinkItemIcon} width={16} height={16} alt={'github'}/>
 				</div>
 			</div>
 		</div>

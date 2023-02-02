@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/NotificationMenu.module.css'
 import Link from 'next/link'
+import Image from 'next/image';
 
 const ProfileMenu = (props: any) => {
 	const [notificationsOpen, setNotificationOpen] = useState(false);
@@ -96,7 +97,7 @@ const ProfileMenu = (props: any) => {
 	return (
 		<div ref={menu}>
 			<div className={styles.notificationButton} onClick={() => {openNotification()}}>
-				<img src='/bell.svg'/>
+				<Image src='/bell.svg' width={15} height={15} alt={'notification'} />
 				{indication && <div className={styles.indication}></div>}
 			</div>
 			{notificationsOpen && <div className={styles.notificationContainer}>
@@ -111,7 +112,9 @@ const ProfileMenu = (props: any) => {
 								<div className={styles.notificationClose} onClick={async () => {
 									deleteNotification(notification._id);
 									setNotifications(notifications.filter((n, i) => i !== index))
-								}}><img className={styles.notificationCloseIcon} src='/close.svg'></img></div>
+								}}>
+								<Image src='/close.svg' width={6} height={6} alt={'close'} />
+								</div>
 							</div>
 							<div className={styles.notificationBottomContainer}>
 								<div className={styles.notificationText}>{notification.messageText}</div>
