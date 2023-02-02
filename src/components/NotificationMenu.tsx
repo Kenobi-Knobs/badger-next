@@ -103,7 +103,7 @@ const ProfileMenu = (props: any) => {
 				{notifications.length > 0 && notifications.map((notification, index) => {
 					return (
 						<div key={notification._id} className={styles.notification}>
-							<div className={styles.notificationsTopContainer}>
+							<div className={styles.notificationTopContainer}>
 								<div className={styles.notificationTitle}>
 									{notification.messageTitle}
 									{!notification.read && <div className={styles.unreadIndication}></div>}
