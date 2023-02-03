@@ -67,8 +67,9 @@ const ProfileMenu = (props: any) => {
 		const hours = d.getHours() < 10 ? '0' + d.getHours() : d.getHours();
 		const minutes = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes();
 		const day = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
-		const month = d.getMonth() < 10 ? '0' + d.getMonth() : d.getMonth() + 1;
-		return `${hours}:${minutes} ${day}.${month}`;
+		const correctMonth = d.getMonth() + 1;
+		const month = correctMonth < 10 ? '0' + correctMonth: correctMonth;
+		return `${hours}:${minutes} ${day}/${month}`;
 	}
 
 	useEffect(() => {

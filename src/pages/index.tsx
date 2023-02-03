@@ -1,44 +1,23 @@
-import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
-import { signOut } from 'next-auth/react'
-import { useRouter } from 'next/router'
-import LoadingView from '@/components/LoadingView'
-import { useState } from 'react'
-import styles from '../styles/Home.module.css'
-import Header from '@/components/Header'
-import Navigation from '@/components/Navigation'
+import type { ReactElement } from 'react'
+import AppLayout from '../components/AppLayout'
+import type { NextPageWithLayout } from './_app'
 
-export default function Home() {
-	const { data: session, status } = useSession()
-	const router = useRouter()
-	const [loading, setLoading] = useState(false)
-
-	useEffect(() => {
-		if (status === "unauthenticated") {
-			router.push('/login')
-		}
-	}, [status])
-
-	const handleLogout = async () => {
-		setLoading(true)
-		const signOutResponce = await signOut({ redirect: false, callbackUrl: '/login' })
-		router.push(signOutResponce.url)
-	}
-
-	if (status === "authenticated") {
-		return (
-			<div className={styles.pageContainer}>
-				<Navigation current="home"></Navigation>
-				<Header
-					session={session}
-					handleLogout={handleLogout}
-					welcome={true}>
-				</Header>
-			</div>
-		)
-	}
-
-	if (status === "loading" || loading) {
-		return <LoadingView />
-	}
+export async function getStaticProps() {
+	return { props: { welcome: true, current: 'home'}}
 }
+
+const Home: NextPageWithLayout = () => {
+	return <p>Main</p>
+}
+
+Home.getLayout = function getLayout(page: ReactElement) {
+	return (
+		<>
+			<AppLayout>
+				{page}
+			</AppLayout>
+		</>
+	)
+}
+
+export default Home
