@@ -11,19 +11,19 @@ const Navigation = (props: any) => {
 			<div className={styles.navigationHeader}>
 				<div className={styles.logo}>Logo</div>
 				<div className={styles.navigationMenu}>
-					<Link href="/" className={`${ current == 'home' 
+					<Link href="/" className={`${ current == '/' 
 						? styles.navigationMenuItem + ' ' + styles.active 
 						: styles.navigationMenuItem}`}>
 						<Image src='/home.svg' className={styles.navigationItemIcon} width={24} height={24} alt={'home'}/>
 						<div className={styles.navigationMenuItemText}>Головна</div>
 					</Link>
-					<Link href="/market" className={`${ current == 'market' 
+					<Link href="/market" className={`${ current == '/market' 
 						? styles.navigationMenuItem + ' ' + styles.active 
 						: styles.navigationMenuItem}`}>
 						<Image src='/market.svg' className={styles.navigationItemIcon} width={24} height={24} alt={'market'}/>
 						<div className={styles.navigationMenuItemText}>Застосунки</div>
 					</Link>
-					<Link href="/settings" className={`${ current == 'settings' 
+					<Link href="/settings" className={`${ current == '/settings' 
 						? styles.navigationMenuItem + ' ' + styles.active 
 						: styles.navigationMenuItem}`}>
 						<Image src='/settings.svg' className={styles.navigationItemIcon} width={24} height={24} alt={'settings'}/>

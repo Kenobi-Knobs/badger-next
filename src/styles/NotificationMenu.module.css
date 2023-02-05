@@ -21,11 +21,12 @@
 }
 
 .notificationContainer {
+	z-index: 1000;
 	width: 300px;
 	max-height: 400px;
 	position: fixed;
 	top: 64px;
-	right: 80px;
+	right: 96px;
 	background-color: #fff;
 	border-radius: 6px;
 	overflow-y: overlay;

@@ -1,0 +1,14 @@
+﻿.pageContainer {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	height: 96vh;
+}
+
+.pageContent {
+	flex: 1 1;
+	padding: 0px 1rem;
+	padding-left: 1.5rem;
+	height: inherit;
+	margin-top: 10px;
+}
