@@ -1,1 +1,96 @@
-﻿
+﻿.avatar {
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.headerContainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 1rem;
+}
+
+.userProfile {
+	display: flex;
+	align-items: flex-start;
+	margin-left: 25px;
+	margin-top: 25px;
+}
+
+.userNameContainer {
+	display: flex;
+	flex-direction: column;
+	margin-left: 15px;
+	margin-top: 20px;
+}
+
+.userFullName {
+	font-size: 1.3rem;
+	font-weight: 600;
+}
+
+.userName {
+	font-size: 1.0rem;
+	color: #8e8e8e;
+	margin-top: 5px;
+}
+
+.headerStatistics {
+	display: flex;
+	align-items: flex-end;
+	padding: 0 1rem;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.statistic {
+	font-size: 0.9rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-top: 10px;
+	color: #b5b5b5;
+}
+
+.apiTitle {
+	margin-top: 60px;
+	margin-left: 40px;
+	font-size: 1.2rem;
+	font-weight: 500;
+}
+
+.apiContainer {
+	width: 95%;
+	height: 400px;
+	border: solid #dbdbdb 1px;
+	border-radius: 8px;
+	margin-left: 40px;
+}
+
+.apiTabBar {
+	display: flex;
+	justify-content: flex-start;
+	margin-left: 40px;
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
+
+.apiTab {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	color: #b5b5b5;
+}
+
+.divider {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.activeTab {
+	font-weight: 500;
+	color: #000;
+}

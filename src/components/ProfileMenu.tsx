@@ -25,7 +25,7 @@ const ProfileMenu = (props: any) => {
 			<div className={styles.userImageContainer}>
 				<Image 
 					className={styles.userImage}
-					src={user.image}
+					src={user.image || '/userpic.png'}
 					alt="user image"
 					width={40}
 					height={40}
