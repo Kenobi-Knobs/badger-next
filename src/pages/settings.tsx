@@ -1,4 +1,4 @@
-﻿import type { ReactElement } from 'react'
+﻿import { ReactElement } from 'react'
 import AppLayout from '../components/AppLayout'
 import type { NextPageWithLayout } from './_app'
 import WidgetLayout from '../components/WidgetLayout'
@@ -34,17 +34,10 @@ const Settings: NextPageWithLayout = () => {
 						</div>
 					</div>
 					<div className={styles.headerStatistics}>
-						<div className={styles.statistic}>Аналізується карток: 0</div>
+						<div className={styles.statistic}>Чогось: 0</div>
 						<div className={styles.statistic}>Днів користування: 1</div>
 					</div>
 				</div>
-				<div className={styles.apiTitle}>API підключення</div>
-				<div className={styles.apiTabBar}>
-					<div className={styles.apiTab + ' ' + styles.activeTab}>PrivatBank</div>
-					<div className={styles.divider}> | </div>
-					<div className={styles.apiTab}>Monobank</div>
-				</div>
-				<div className={styles.apiContainer}></div>
 			</>
 		)
 	}
