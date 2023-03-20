@@ -6,7 +6,7 @@ import { SessionProvider } from "next-auth/react"
 import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
 
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+export type NextPageWithLayout<P = {}> = NextPage<P> & {
 	getLayout?: (page: ReactElement) => ReactNode
 }
 

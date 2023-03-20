@@ -1,0 +1,70 @@
+﻿.cardBody {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background: #ffffff;
+	width: 220px;
+	height: 160px;
+	margin-right: 25px;
+	border-radius: 12px;
+	filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.25));
+	margin-bottom: 20px;
+	transition-duration: 0.5s;
+}
+
+.cardImageContainer {
+	width: 100%;
+	height: 25%;
+}
+
+.cardImage {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 12px 12px 0px 0px;
+}
+
+.cardName {
+	font-size: 1.1rem;
+	font-weight: 500;
+	height: 30px;
+	margin-left: 8px;
+	margin-top: 10px;
+}
+
+.cardDescription {
+	font-size: 0.8rem;
+	font-weight: 400;
+	height: 30px;
+	margin-bottom: 10px;
+	margin-left: 8px;
+}
+
+.cardBody:hover {
+	cursor: pointer;
+	filter: drop-shadow(2px 3px 4px rgba(0, 0, 0, 0.5));
+	transition-duration: 0.5s;
+}
+
+.deleteButton {
+	width: 14px;
+	height: 15px;
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	background-color: #ffffff;
+	border-radius: 100%;
+	transition-duration: 0.5s;
+}
+
+.deleteButton:hover {
+	transition-duration: 0.5s;
+	background-color: #fac8c8;
+}
+
+.closeIcon {
+	color: transparent;
+	width: 6px;
+	height: 16px;
+	margin-left: 4px;
+}
