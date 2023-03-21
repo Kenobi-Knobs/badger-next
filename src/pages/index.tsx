@@ -6,16 +6,21 @@ import LoadingView from '@/components/LoadingView'
 import { useState } from 'react'
 import WidgetPreview from '@/components/WidgetPreview'
 import styles from '@/styles/Home.module.css'
+import { useRouter } from 'next/router'
 
 const Home: NextPageWithLayout = () => {
 	const { data: session, status } = useSession();
 	const [widgets , setWidgets] = useState<any[]>([]);
 	const [loading , setLoading] = useState(false);
+	const router = useRouter();
 
 	const deleteWidget = async (id: string) => {
-		console.log(id);
 		const updatedWidgets = widgets.filter((widget) => widget.id !== id);
 		setWidgets(updatedWidgets);
+	}
+
+	const openWidget = async (id: string) => {
+		router.push(`/widget/${id}`);
 	}
 
 	const getWidgets = async () => {
@@ -43,7 +48,7 @@ const Home: NextPageWithLayout = () => {
 			<>
 				<div className={styles.widgetContainer}>
 					{widgets.map((widget) => (
-						<WidgetPreview key={widget.id} widget={widget} deleteWidget={deleteWidget} />
+						<WidgetPreview key={widget.id} widget={widget} deleteWidget={deleteWidget} openWidget={openWidget}/>
 					))}
 				</div>
 			</>

@@ -3,11 +3,14 @@ import Image from 'next/image'
 import { useState } from 'react'
 
 const WidgetPreview = (props: any) => {
-	const {key, widget, deleteWidget } = props;
+	const {key, widget, deleteWidget, openWidget } = props;
 	const [deleteButton, setDeleteButton] = useState(false);
 
 	return (
-		<div className={styles.cardBody} onMouseEnter={() => setDeleteButton(true)} onMouseLeave={() => setDeleteButton(false)}>
+		<div className={styles.cardBody} 
+			onMouseEnter={() => setDeleteButton(true)}
+			onMouseLeave={() => setDeleteButton(false)}
+			onClick={() => openWidget(widget.id)}>
 			{deleteButton && 
 				<div className={styles.deleteButton} onClick={() => deleteWidget(widget.id)}>
 					<Image src='/close.svg' width={6} height={6} alt={'close'} className={styles.closeIcon}/>

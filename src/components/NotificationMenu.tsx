@@ -126,7 +126,7 @@ const ProfileMenu = (props: any) => {
 				})}
 				{notifications.length === 0 && <div className={styles.noNotifications}>Немає сповіщень 🤷‍♂️</div>}
 				<div className={styles.archiveLink}>
-					<Link href='/notifications' className={styles.link}>Архів сповіщеннь</Link>
+					<Link href='/notificationsArchive' className={styles.link} onClick={() => setNotificationOpen(false)}>Архів сповіщеннь</Link>
 				</div>
 			</div>}
 		</div>

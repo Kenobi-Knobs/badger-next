@@ -1,0 +1,99 @@
+﻿.notificationsContainer{
+	height: 100%;
+	margin-left: 20px;
+}
+
+.searchContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 0px;
+	margin: 0px 10px;
+	width: 400px;
+	margin-top: 15px;
+	margin-bottom: 5px;
+}
+
+.searchInput {
+	width: 100%;
+	border: none;
+	outline: none;
+	border-bottom: 1px solid #e5e5e5;
+	color: #2f2f2f;
+}
+
+.searchIcon {
+	border-bottom: 1px solid #e5e5e5;
+	padding-bottom: 2px;
+}
+
+.notification {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	padding: 10px 0px;
+	border-bottom: 1px solid #e5e5e5;
+	margin: 0px 10px;
+	flex-direction: column;
+	width: 400px;
+}
+
+.notificationTitle {
+	font-size: 0.8rem;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	max-width: 240px;
+}
+
+.notificationText
+{
+	font-size: 0.7rem;
+	color: #767676;
+}
+
+.notificationDate {
+	font-size: 0.6rem;
+	min-width: 54px;
+}
+
+.notificationTopContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-start;
+	width: 400px;
+}
+
+.notificationBottomContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-end;
+	width: 400px;
+}
+
+.notificationClose {
+	cursor: pointer;
+}
+
+.notificationsList {
+	overflow-y: overlay;
+	max-height: -webkit-fill-available;
+	width: 420px;
+}
+
+.notificationsList::-webkit-scrollbar {
+	width: 4px;
+	background: transparent;
+}
+
+.notificationsList::-webkit-scrollbar-thumb {
+	background: #a2a2a2;
+	border-radius: 10px;
+}
+
+.notificationsList::-webkit-scrollbar-track {
+	background: transparent;
+}
