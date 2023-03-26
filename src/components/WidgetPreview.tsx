@@ -10,10 +10,10 @@ const WidgetPreview = (props: any) => {
 		<div className={styles.cardBody} 
 			onMouseEnter={() => setDeleteButton(true)}
 			onMouseLeave={() => setDeleteButton(false)}
-			onClick={() => openWidget(widget.id)}>
+			onClick={() => openWidget(event, widget._id)}>
 			{deleteButton && 
-				<div className={styles.deleteButton} onClick={() => deleteWidget(widget.id)}>
-					<Image src='/close.svg' width={6} height={6} alt={'close'} className={styles.closeIcon}/>
+				<div className={styles.deleteButton} onClick={() => deleteWidget(widget._id)}>
+					<Image src='/close.svg' width={6} height={6} alt={'close'} className={styles.deleteIcon}/>
 				</div>
 			}
 			<div className={styles.cardImageContainer}>

@@ -15,11 +15,14 @@ const Home: NextPageWithLayout = () => {
 	const router = useRouter();
 
 	const deleteWidget = async (id: string) => {
-		const updatedWidgets = widgets.filter((widget) => widget.id !== id);
+		const updatedWidgets = widgets.filter((widget) => widget._id !== id);
 		setWidgets(updatedWidgets);
 	}
 
-	const openWidget = async (id: string) => {
+	const openWidget = async (event:any, id: string) => {
+		if (event.target.className.includes('delete')) {
+			return;
+		}
 		router.push(`/widget/${id}`);
 	}
 
