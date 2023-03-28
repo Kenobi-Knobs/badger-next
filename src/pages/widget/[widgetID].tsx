@@ -21,7 +21,7 @@ const Widget: NextPageWithLayout = () => {
 	return (
 		<>
 			<div>
-				widgetContent
+				Контент віджета
 			</div>
 		</>
 	)

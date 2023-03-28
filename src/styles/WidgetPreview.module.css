@@ -25,11 +25,11 @@
 }
 
 .cardName {
-	font-size: 1.1rem;
+	font-size: 1rem;
 	font-weight: 500;
-	height: 30px;
 	margin-left: 8px;
 	margin-top: 10px;
+	margin-bottom: 8px;
 }
 
 .cardDescription {

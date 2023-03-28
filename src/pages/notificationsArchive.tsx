@@ -81,34 +81,42 @@ const NotificationsArchive: NextPageWithLayout = () => {
 		return <LoadingView />
 	} else {
 		return (
-			<div className={styles.notificationsContainer}>
-				<div className={styles.searchContainer}>
-					<Image src='/search.svg' width={16} height={16} alt={'search'} className={styles.searchIcon}/>
-					<input type="text" placeholder={'Пошук'} className={styles.searchInput} onChange={() => setFilter()}/>
+			<div className={styles.container}>
+				<div className={styles.notificationsContainer}>
+					<div className={styles.searchContainer}>
+						<Image src='/search.svg' width={16} height={16} alt={'search'} className={styles.searchIcon}/>
+						<input type="text" placeholder={'Пошук'} className={styles.searchInput} onChange={() => setFilter()}/>
+					</div>
+					<div className={styles.notificationsList}>
+						{showNotifications.length > 0 && showNotifications.map((notification, index) => {
+							return (
+								<div key={notification._id} className={styles.notification}>
+									<div className={styles.notificationTopContainer}>
+										<div className={styles.notificationTitle}>
+											{notification.messageTitle}
+										</div>
+										<div className={styles.notificationClose} onClick={async () => {
+											deleteNotification(notification._id);
+											setNotifications(notifications.filter((n, i) => i !== index));
+											setShowNotifications(showNotifications.filter((n, i) => i !== index));
+										}}>
+										<Image src='/close.svg' width={6} height={6} alt={'close'} />
+										</div>
+									</div>
+									<div className={styles.notificationBottomContainer}>
+										<div className={styles.notificationText}>{notification.messageText}</div>
+										<div className={styles.notificationDate}>{formatDate(notification.date)}</div>
+									</div>
+								</div>
+							);
+						})}
+					</div>
 				</div>
-				<div className={styles.notificationsList}>
-					{showNotifications.length > 0 && showNotifications.map((notification, index) => {
-						return (
-							<div key={notification._id} className={styles.notification}>
-								<div className={styles.notificationTopContainer}>
-									<div className={styles.notificationTitle}>
-										{notification.messageTitle}
-									</div>
-									<div className={styles.notificationClose} onClick={async () => {
-										deleteNotification(notification._id);
-										setNotifications(notifications.filter((n, i) => i !== index));
-										setShowNotifications(showNotifications.filter((n, i) => i !== index));
-									}}>
-									<Image src='/close.svg' width={6} height={6} alt={'close'} />
-									</div>
-								</div>
-								<div className={styles.notificationBottomContainer}>
-									<div className={styles.notificationText}>{notification.messageText}</div>
-									<div className={styles.notificationDate}>{formatDate(notification.date)}</div>
-								</div>
-							</div>
-						);
-					})}
+				<div className={styles.descriptionContainer}>
+					<div className={styles.descriptionText}>
+						Тут ви можете переглянути всі сповіщення, які ви отримали від нас або наявних віджетів. Ви можете шукати сповіщення за датою, текстом або заголовком. Якщо сповіщення не потрібне вам, ви можете його видалити це збереже місце на нашому сервері.
+					</div>
+					<Image src='/notificationArchive.png' width={200} height={200} alt={'notificationArchive'} className={styles.descriptionImage}/>
 				</div>
 			</div>
 		)
