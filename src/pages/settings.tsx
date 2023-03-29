@@ -56,12 +56,38 @@ const Settings: NextPageWithLayout = () => {
 							className={styles.avatar}
 						/>
 						<div className={styles.userNameContainer}>
-							<div className={styles.userFullName}>{user?.name || ''}</div>
+							<div className = {styles.topContainer}>
+								<div className={styles.userFullName}>{user?.name || ''}</div>
+								{user?.role === 'admin' && <div className={styles.adminBadge}>admin</div>}
+							</div>
 							<div className={styles.userName}>{'@' + user?.username || ''}</div>
 						</div>
 					</div>
 					<div className={styles.headerStatistics}>
 						<div className={styles.statistic}>Днів користування: {getUsingDayCount(user?.registeredAt)}</div>
+					</div>
+				</div>
+				<div className={styles.settingsContainer}>
+					<div>
+						<div className={styles.settingComponent}>
+							<div className={styles.settingLeftBlock}>
+								<div className={styles.settingName}>Скидання віджетів</div>
+								<div className={styles.settingDescription}>Це скине всі віджети до початкового стану</div>
+							</div>
+							<button className={styles.settingButton}>Скинути</button>
+						</div>
+						<div className={styles.settingComponent}>
+							<div className={styles.settingLeftBlock}>
+								<div className={styles.settingName}>Сповіщення</div>
+								<div className={styles.settingDescription}>Якщо вимкнути сповіщення ви не будете отримувати повідомлення від сервісу чи користувачів</div>
+							</div>
+							<button className={styles.settingButton}>Вимкнути</button>
+						</div>
+					</div>
+					<div>
+						{user?.role === 'admin' &&
+							<p>Зареструвати віджет</p>
+						}
 					</div>
 				</div>
 			</>

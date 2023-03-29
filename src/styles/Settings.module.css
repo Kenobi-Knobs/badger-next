@@ -52,3 +52,59 @@
 	margin-top: 10px;
 	color: #b5b5b5;
 }
+
+.topContainer {
+	display: flex;
+}
+
+.adminBadge {
+	margin-left: 10px;
+	font-size: 0.7rem;
+	background-color: #fff70b;
+	padding: 6px;
+	border-radius: 8px;
+}
+
+.settingsContainer {
+	margin-left: 35px;
+	margin-top: 50px;
+	display: flex;
+}
+
+.settingComponent {
+	display: flex;
+	max-width: 550px;
+	justify-content: space-between;
+	margin-bottom: 25px;
+	align-items: flex-end;
+	padding-bottom: 15px;
+	border-bottom: 1px solid #d7d7d7;
+}
+
+.settingLeftBlock {
+	max-width: 70%;
+}
+
+.settingName {
+	font-size: 1.1rem;
+	font-weight: 500;
+	margin-bottom: 8px;
+}
+
+.settingDescription {
+	font-size: 0.9rem;
+	color: #8e8e8e;
+}
+
+.settingButton {
+	background-color: white;
+	padding: 5px;
+	border: 0.11rem solid black;
+	border-radius: 7px;
+	min-width: 90px;
+	cursor: pointer;
+}
+
+.settingButton:hover {
+	border: 0.14rem solid black;
+}

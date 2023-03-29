@@ -111,7 +111,9 @@
 .notificationsList {
 	overflow-y: overlay;
 	max-height: -webkit-fill-available;
-	width: 420px;
+	width: 425px;
+	height: 82%;
+	margin-top: 20px;
 }
 
 .notificationsList::-webkit-scrollbar {
