@@ -108,3 +108,52 @@
 .settingButton:hover {
 	border: 0.14rem solid black;
 }
+
+.registerWidgetFormContainer {
+	display: flex;
+	flex-direction: column;
+	margin-left: 35px;
+}
+
+.registerWidgetForm {
+	display: flex;
+	flex-direction: column;
+}
+
+.registerWidgetFormHeader {
+	font-size: 1.1rem;
+	font-weight: 500;
+	margin-bottom: 15px;
+}
+
+.registerWidgetFormInputContainer {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 15px;
+}
+
+.registerWidgetFormInputName {
+	font-size: 0.9rem;
+	color: #8e8e8e;
+	margin-bottom: 5px;
+}
+
+.registerWidgetFormInput {
+	border: 1px solid #d7d7d7;
+	border-radius: 5px;
+	padding: 5px;
+	width: 250px;
+}
+
+.registerWidgetFormButton {
+	background-color: white;
+	padding: 5px;
+	border: 0.11rem solid black;
+	border-radius: 7px;
+	min-width: 90px;
+	cursor: pointer;
+}
+
+.registerWidgetFormButton:hover {
+	border: 0.14rem solid black;
+}

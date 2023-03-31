@@ -86,7 +86,28 @@ const Settings: NextPageWithLayout = () => {
 					</div>
 					<div>
 						{user?.role === 'admin' &&
-							<p>Зареструвати віджет</p>
+							<div className={styles.registerWidgetFormContainer}>
+								<div className={styles.registerWidgetForm}>
+									<div className={styles.registerWidgetFormHeader}>Реєстрація віджету</div>
+									<div className={styles.registerWidgetFormInputContainer}>
+										<div className={styles.registerWidgetFormInputName}>Назва віджету</div>
+										<input className={styles.registerWidgetFormInput} type="text" placeholder="Назва віджету" />
+									</div>
+									<div className={styles.registerWidgetFormInputContainer}>
+										<div className={styles.registerWidgetFormInputName}>Опис віджету</div>
+										<textarea className={styles.registerWidgetFormInput} placeholder="Опис віджету"/>
+									</div>
+									<div className={styles.registerWidgetFormInputContainer}>
+										<div className={styles.registerWidgetFormInputName}>Фото</div>
+										<input className={styles.registerWidgetFormInput} type="text" placeholder="/widgetsResources/widgetPhoto.png" />
+									</div>
+									<div className={styles.registerWidgetFormInputContainer}>
+										<div className={styles.registerWidgetFormInputName}>Коротка назва</div>
+										<input className={styles.registerWidgetFormInput} type="text" placeholder="test-widget"/>
+									</div>
+									<button className={styles.registerWidgetFormButton}>Зареєструвати</button>
+								</div>
+							</div>
 						}
 					</div>
 				</div>
