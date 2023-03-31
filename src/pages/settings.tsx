@@ -5,6 +5,7 @@ import WidgetLayout from '../components/WidgetLayout'
 import styles from '../styles/Settings.module.css'
 import LoadingView from '@/components/LoadingView'
 import Image from 'next/image'
+import { toast } from "react-toastify";
 
 export async function getStaticProps() {
 	return { props: { title: 'Налаштування ⚙️'}}
@@ -36,10 +37,79 @@ const Settings: NextPageWithLayout = () => {
 		setLoading(false);
 	}
 
+	const getFormData = () => {
+		const name = document.getElementById('name') as HTMLInputElement;
+		const description = document.getElementById('description') as HTMLInputElement;
+		const image = document.getElementById('image') as HTMLInputElement;
+		const shortName = document.getElementById('shortName') as HTMLInputElement;
+
+		return {
+			name: name.value,
+			description: description.value,
+			image: image.value,
+			shortName: shortName.value,
+		}
+	}
+
+	const registerWidget = async () => {
+		const formData = getFormData();
+
+		if (!formData.name || !formData.description || !formData.image || !formData.shortName) {
+			toast.error('Заповніть всі поля', {
+				position: "bottom-center",
+				autoClose: 5000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+			});
+			return;
+		}
+
+		const res = await fetch('/api/registerWidget', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`
+			},
+			body: JSON.stringify({
+				name: formData.name,
+				description: formData.description,
+				image: formData.image,
+				shortName: formData.shortName,
+			})
+		});
+		const data = await res.json();
+		if (data.status === 'success') {
+			toast.success('Віджет успішно зареєстровано', {
+				position: "bottom-center",
+				autoClose: 5000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+			});
+		} else {
+			toast.error(data.error, {
+				position: "bottom-center",
+				autoClose: 5000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+			});
+		}
+	}
+
 	useEffect(() => {
 		getUserinfo();
 	} ,[])
-
 
 	if (loading) {
 		return <LoadingView />
@@ -91,21 +161,21 @@ const Settings: NextPageWithLayout = () => {
 									<div className={styles.registerWidgetFormHeader}>Реєстрація віджету</div>
 									<div className={styles.registerWidgetFormInputContainer}>
 										<div className={styles.registerWidgetFormInputName}>Назва віджету</div>
-										<input className={styles.registerWidgetFormInput} type="text" placeholder="Назва віджету" />
+										<input className={styles.registerWidgetFormInput} type="text" placeholder="Назва віджету" id="name" required/>
 									</div>
 									<div className={styles.registerWidgetFormInputContainer}>
 										<div className={styles.registerWidgetFormInputName}>Опис віджету</div>
-										<textarea className={styles.registerWidgetFormInput} placeholder="Опис віджету"/>
+										<textarea className={styles.registerWidgetFormInput} placeholder="Опис віджету" id="description" required/>
 									</div>
 									<div className={styles.registerWidgetFormInputContainer}>
 										<div className={styles.registerWidgetFormInputName}>Фото</div>
-										<input className={styles.registerWidgetFormInput} type="text" placeholder="/widgetsResources/widgetPhoto.png" />
+										<input className={styles.registerWidgetFormInput} type="text" placeholder="/widgetsResources/widgetPhoto.png" id="image" required/>
 									</div>
 									<div className={styles.registerWidgetFormInputContainer}>
 										<div className={styles.registerWidgetFormInputName}>Коротка назва</div>
-										<input className={styles.registerWidgetFormInput} type="text" placeholder="test-widget"/>
+										<input className={styles.registerWidgetFormInput} type="text" placeholder="test-widget" id="shortName" required/>
 									</div>
-									<button className={styles.registerWidgetFormButton}>Зареєструвати</button>
+									<button className={styles.registerWidgetFormButton} onClick={() => registerWidget()}>Зареєструвати</button>
 								</div>
 							</div>
 						}
