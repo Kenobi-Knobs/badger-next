@@ -41,30 +41,49 @@
 }
 
 .cardBody:hover {
-	cursor: pointer;
 	filter: drop-shadow(2px 3px 4px rgba(0, 0, 0, 0.5));
 	transition-duration: 0.5s;
 }
 
-.deleteButton {
-	width: 14px;
-	height: 15px;
-	position: absolute;
-	top: 8px;
-	right: 8px;
-	background-color: #ffffff;
-	border-radius: 100%;
+.cardButton {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	flex-direction: row;
+}
+
+.alreadyInstalled {
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	flex-direction: column;
+	background: rgb(255 251 125);
+	border-radius: 6px;
+	font-size: 0.8rem;
+	padding: 4px;
+	margin-right: 10px;
+}
+
+.installButton {
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	flex-direction: row;
+	border-radius: 6px;
+	font-size: 0.8rem;
+	padding: 4px;
+	cursor: pointer;
+	border: 1px solid rgb(128, 128, 128);
+	color: rgb(128, 128, 128);
+	margin-right: 10px;
+}
+
+.installButton:hover {
+	color: black;
+	border: 1px solid black;
 	transition-duration: 0.5s;
 }
 
-.deleteButton:hover {
-	transition-duration: 0.5s;
-	background-color: #fac8c8;
-}
-
-.deleteIcon {
-	color: transparent;
-	width: 6px;
-	height: 16px;
+.plusIcon {
 	margin-left: 4px;
 }

@@ -99,14 +99,17 @@
 .settingButton {
 	background-color: white;
 	padding: 5px;
-	border: 0.11rem solid black;
+	border: 1px solid rgb(128, 128, 128);
+	color: rgb(128, 128, 128);
 	border-radius: 7px;
 	min-width: 90px;
 	cursor: pointer;
 }
 
 .settingButton:hover {
-	border: 0.14rem solid black;
+	color: black;
+	border: 1px solid black;
+	transition-duration: 0.5s;
 }
 
 .registerWidgetFormContainer {
@@ -148,12 +151,15 @@
 .registerWidgetFormButton {
 	background-color: white;
 	padding: 5px;
-	border: 0.11rem solid black;
+	border: 1px solid rgb(128, 128, 128);
+	color: rgb(128, 128, 128);
 	border-radius: 7px;
 	min-width: 90px;
 	cursor: pointer;
 }
 
 .registerWidgetFormButton:hover {
-	border: 0.14rem solid black;
+	color: black;
+	border: 1px solid black;
+	transition-duration: 0.5s;
 }
