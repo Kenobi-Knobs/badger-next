@@ -3,4 +3,5 @@
 body {
 	font-family: 'Rubik', sans-serif;
 	background-color: #F2F2F2;
+	color-scheme: only dark !important;
 }
