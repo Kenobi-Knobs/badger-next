@@ -51,6 +51,26 @@ const Settings: NextPageWithLayout = () => {
 		}
 	}
 
+	const toggleNotify = async () => {
+		const res = await fetch('/api/toggleNotify', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`
+			},
+		});
+		const data = await res.json();
+		if (data.error) {
+			toast.error(data.error);
+			return;
+		}
+
+		setUser({
+			...user,
+			canNotify: !user.canNotify
+		});
+	}
+
 	const registerWidget = async () => {
 		const formData = getFormData();
 
@@ -142,17 +162,22 @@ const Settings: NextPageWithLayout = () => {
 					<div>
 						<div className={styles.settingComponent}>
 							<div className={styles.settingLeftBlock}>
+								<div className={styles.settingName}>Сповіщення</div>
+								<div className={styles.settingDescription}>
+									{user?.canNotify ? 'Якщо вимкнути сповіщення ви не будете отримувати повідомлення від сервісу чи користувачів' :
+									'Сповіщення вимкнено, ви не отримуєте повідомлення від сервісу чи користувачів'}
+								</div>
+							</div>
+							<button className={styles.settingButton} onClick={() => toggleNotify()}>
+								{user?.canNotify ? 'Вимкнути' : 'Увімкнути'}
+							</button>
+						</div>
+						<div className={styles.settingComponent}>
+							<div className={styles.settingLeftBlock}>
 								<div className={styles.settingName}>Скидання віджетів</div>
 								<div className={styles.settingDescription}>Це скине всі віджети до початкового стану</div>
 							</div>
 							<button className={styles.settingButton}>Скинути</button>
-						</div>
-						<div className={styles.settingComponent}>
-							<div className={styles.settingLeftBlock}>
-								<div className={styles.settingName}>Сповіщення</div>
-								<div className={styles.settingDescription}>Якщо вимкнути сповіщення ви не будете отримувати повідомлення від сервісу чи користувачів</div>
-							</div>
-							<button className={styles.settingButton}>Вимкнути</button>
 						</div>
 					</div>
 					<div>

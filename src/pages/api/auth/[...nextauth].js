@@ -20,6 +20,7 @@ export const authOptions = {
 						await collection.insertOne({
 							id: user.id,
 							role: 'user',
+							canNotify: true,
 							name: [user.first_name, user.last_name || ''].join(' ').trim(),
 							image: user.photo_url || null,
 							username: user.username || null,
