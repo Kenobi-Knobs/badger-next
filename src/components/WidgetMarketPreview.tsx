@@ -2,7 +2,7 @@
 import Image from 'next/image'
 
 const WidgetMarketPreview = (props: any) => {
-	const {key, widget, userWidgets} = props;
+	const {widget, userWidgets, addWidget} = props;
 
 	const isInstalled = () => {
 		for (let i = 0; i < userWidgets.length; i++) {
@@ -38,7 +38,7 @@ const WidgetMarketPreview = (props: any) => {
 				</div>
 			) : (
 				<div className={styles.cardButton}>
-					<div className={styles.installButton}>
+					<div className={styles.installButton} onClick={() => addWidget(widget._id.toString())}>
 						Додати <div className={styles.plusIcon}>+</div>
 					</div>
 				</div>

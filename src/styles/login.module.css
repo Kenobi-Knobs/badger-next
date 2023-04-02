@@ -4,6 +4,7 @@
 	justify-content: center;
 	align-items: center;
 	height: 96vh;
+	color-scheme: only dark !important;
 }
 
 .descriptionText {

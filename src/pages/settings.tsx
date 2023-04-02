@@ -135,6 +135,7 @@ const Settings: NextPageWithLayout = () => {
 					</div>
 					<div className={styles.headerStatistics}>
 						<div className={styles.statistic}>Днів користування: {getUsingDayCount(user?.registeredAt)}</div>
+						<div className={styles.statistic}>Віджетів: {user?.widgets?.length || 0}</div>
 					</div>
 				</div>
 				<div className={styles.settingsContainer}>

@@ -7,6 +7,7 @@ import { useState } from 'react'
 import WidgetPreview from '@/components/WidgetPreview'
 import styles from '@/styles/Home.module.css'
 import { useRouter } from 'next/router'
+import { toast } from "react-toastify";
 
 const Home: NextPageWithLayout = () => {
 	const { data: session, status } = useSession();
@@ -15,6 +16,19 @@ const Home: NextPageWithLayout = () => {
 	const router = useRouter();
 
 	const deleteWidget = async (id: string) => {
+		const res = await fetch('/api/deleteWidget', {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`
+			},
+			body: JSON.stringify({id})
+		});
+		const data = await res.json();
+		if (data.error) {
+			toast.error(data.error);
+			return;
+		}
 		const updatedWidgets = widgets.filter((widget) => widget._id !== id);
 		setWidgets(updatedWidgets);
 	}
@@ -49,11 +63,23 @@ const Home: NextPageWithLayout = () => {
 	} else {
 		return (
 			<>
-				<div className={styles.widgetContainer}>
-					{widgets.map((widget) => (
-						<WidgetPreview key={widget.id} widget={widget} deleteWidget={deleteWidget} openWidget={openWidget}/>
-					))}
-				</div>
+				{widgets.length != 0 && 
+					<>
+						<div className={styles.header}>
+							Ось ваші додатки
+						</div>
+						<div className={styles.widgetContainer}>
+							{widgets.map((widget) => (
+								<WidgetPreview key={widget._id.toString()} widget={widget} deleteWidget={deleteWidget} openWidget={openWidget}/>
+							))}
+						</div>
+					</>
+				}
+				{widgets.length == 0 &&
+					<div className={styles.noWidgets}>
+						У вас немає застосунків, оберіть їх з доступних в бібліотеці.
+					</div>
+				}
 			</>
 		)
 	}

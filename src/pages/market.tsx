@@ -6,14 +6,37 @@ import Image from 'next/image'
 import { useState } from 'react'
 import WidgetMarketPreview from '@/components/WidgetMarketPreview'
 import LoadingView from '@/components/LoadingView'
+import { toast } from "react-toastify";
 
 const Market: NextPageWithLayout = () => {
 	const [widgets , setWidgets] = useState<any[]>([]);
 	const [userWidgets , setUserWidgets] = useState<any[]>([]);
 	const [loading , setLoading] = useState(false);
 
-	const getWidgets = async () => {
-		setLoading(true);
+	const addWidget = async (id: string) => {
+		const res = await fetch('/api/addWidget', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`
+			},
+			body: JSON.stringify({id})
+		});
+		const data = await res.json();
+		if (data.error) {
+			toast.error(data.error);
+			return;
+		}
+		const updateUserWidgets = userWidgets;
+		updateUserWidgets.push(id);
+		setUserWidgets(updateUserWidgets);
+		getWidgets(false);
+	}
+
+	const getWidgets = async (load: boolean) => {
+		if (load) {
+			setLoading(true);
+		}
 		const res = await fetch('/api/getWidgetsMarketPreview', {
 			method: 'GET',
 			headers: {
@@ -35,11 +58,34 @@ const Market: NextPageWithLayout = () => {
 		if (userData.user.widgets && userData.user.widgets.length != 0) {
 			setUserWidgets(userData.user.widgets);
 		}
-		setLoading(false);
+		if (load) {
+			setLoading(false);
+		}
+	}
+
+	const setFilter = () => {
+		const input = document.querySelector('input') as HTMLInputElement;
+		let filterText = input.value
+		if (filterText === '') {
+			getWidgets(false);
+			return;
+		}
+
+		const filteredWidgets = widgets.filter((widget) => {
+			const name = widget.name.toLowerCase();
+			const description = widget.description.toLowerCase();
+			filterText = filterText.toLowerCase();
+			if (name.includes(filterText) || description.includes(filterText)) {
+				return true;
+			}
+			return false;
+		})
+
+		setWidgets(filteredWidgets);
 	}
 
 	useEffect(() => {
-		getWidgets();
+		getWidgets(true);
 	} ,[])
 
 	if (status === 'loading' || loading) {
@@ -51,11 +97,11 @@ const Market: NextPageWithLayout = () => {
 					<div className={styles.header}>Доступні додатки 🔥</div>
 					<div className={styles.searchContainer}>
 						<Image src='/search.svg' width={16} height={16} alt={'search'} className={styles.searchIcon}/>
-						<input type="text" placeholder={'Пошук'} className={styles.searchInput}/>
+						<input type="text" placeholder={'Пошук'} className={styles.searchInput} onChange={() => setFilter()}/>
 					</div>
 					<div className={styles.widgetsContainer}>
 						{widgets.map((widget) => (
-							<WidgetMarketPreview key={widget.id} widget={widget} userWidgets={userWidgets}/>
+							<WidgetMarketPreview key={widget._id.toString()} widget={widget} userWidgets={userWidgets} addWidget={addWidget}/>
 						))}
 					</div>
 				</div>

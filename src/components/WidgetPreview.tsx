@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 
 const WidgetPreview = (props: any) => {
-	const {key, widget, deleteWidget, openWidget } = props;
+	const {widget, deleteWidget, openWidget } = props;
 	const [deleteButton, setDeleteButton] = useState(false);
 
 	return (
@@ -23,6 +23,7 @@ const WidgetPreview = (props: any) => {
 					height={200}
 					alt="widget image"
 					className={styles.cardImage}
+					priority={true}
 				/>
 			</div>
 			<div className={styles.cardName}>
