@@ -1,0 +1,177 @@
+﻿.body {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: space-between;
+	height: 100%;
+}
+
+.mainContainer {
+	height: calc(100% - 40px);
+	width: 75%;
+	padding: 20px;
+}
+
+.sidebarContainer {
+	padding: 20px;
+	width: 25%;
+	height: calc(100% - 40px);
+	border-left: 1px solid rgb(211, 211, 211);
+}
+
+.csvInputHeader {
+	font-size: 1.1rem;
+	margin-bottom: 8px
+}
+
+.csvInputDescription {
+	font-size: 0.8rem;
+	margin-bottom: 8px;
+	color: #2f2f2f;
+}
+
+.csvInputContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.csvInput {
+	margin-top: 10px;
+	width: 100%;
+	border-radius: 6px;
+	padding: 2px;
+	border: 1px solid #e5e5e5;
+	color: rgb(128, 128, 128);
+	overflow: hidden;
+}
+
+.csvInput > input::file-selector-button{
+	border-radius: 4px;
+	border: 1px solid rgb(128, 128, 128);
+	color: rgb(128, 128, 128);
+	background-color: white;
+	margin-right: 15px;
+	padding: 4px 8px;
+	cursor: pointer;
+}
+
+.csvInput > input::file-selector-button:hover{
+	color: black;
+	border: 1px solid black;
+	transition-duration: 0.5s;
+}
+
+.csvInputRemoveButton {
+	margin-top: 10px;
+	width: fit-content;
+	border: 1px solid rgb(128, 128, 128);
+	color: rgb(128, 128, 128);
+	padding: 4px 8px;
+	font-size: 0.8rem;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.csvInputRemoveButton:hover {
+	color: black;
+	border: 1px solid black;
+	transition-duration: 0.5s;
+}
+
+.csvInputRemoveButtonDisabled {
+	margin-top: 10px;
+	width: fit-content;
+	border: 1px solid rgb(209, 209, 209);
+	color: rgb(195, 195, 195);
+	padding: 4px 8px;
+	font-size: 0.8rem;
+	border-radius: 4px;
+	cursor: default;
+}
+
+.noData {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 80%;
+}
+
+.noDataHeader {
+	font-size: 1rem;
+	margin-bottom: 10px;
+}
+
+.noDataDescription {
+	font-size: 0.9rem;
+	color: #7e7e7e;
+}
+
+.contentContainer {
+	display: flex;
+}
+
+.controlRow {
+	width: 30%;
+}
+
+.plotRow {
+	width: 70%;
+}
+
+.contentHeader {
+	font-size: 1.1rem;
+	margin-bottom: 10px;
+}
+
+.contentDescription {
+	font-size: 0.8rem;
+	color: #7e7e7e;
+	margin-bottom: 10px;
+}
+
+.contentControlContainer {
+	margin-top: 15px;
+}
+
+.controlDescription {
+	font-size: 0.9rem;
+	color: #1a1a1a;
+	margin-bottom: 6px;
+}
+
+.dropdown {
+	position: relative;
+	overflow: hidden;
+	background-color: white;
+	border: 1px solid #ccc;
+	border-radius: 6px !important;
+	box-sizing: border-box;
+	color: #333;
+	cursor: pointer;
+	outline: none;
+	padding: 8px 0px 8px 10px;
+	transition: all 200ms ease;
+	width: 80%;
+	font-size: 0.8rem;
+	cursor: pointer !important;
+}
+
+.dropdownMenu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	background-color: white;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	box-sizing: border-box;
+	color: #333;
+	cursor: pointer;
+	outline: none;
+	transition: all 200ms ease;
+	width: 80% !important;
+	font-size: 0.8rem;
+}

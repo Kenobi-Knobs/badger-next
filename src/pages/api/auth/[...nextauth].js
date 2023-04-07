@@ -25,6 +25,7 @@ export const authOptions = {
 							image: user.photo_url || null,
 							username: user.username || null,
 							registeredAt: new Date(),
+							widgets: [],
 						});
 					} else {
 						await collection.updateOne(
