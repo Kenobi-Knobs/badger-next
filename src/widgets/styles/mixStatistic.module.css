@@ -139,6 +139,7 @@
 	font-size: 0.9rem;
 	color: #1a1a1a;
 	margin-bottom: 6px;
+	margin-top: 12px;
 }
 
 .dropdown {
@@ -174,4 +175,8 @@
 	transition: all 200ms ease;
 	width: 80% !important;
 	font-size: 0.8rem;
+}
+
+.plotContainer {
+	margin-top: 15px;
 }

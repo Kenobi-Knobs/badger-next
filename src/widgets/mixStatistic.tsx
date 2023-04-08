@@ -3,18 +3,24 @@ import CSVReader from 'react-csv-reader';
 import style from './styles/mixStatistic.module.css';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
+import BarChart from './components/BarChart';
+import { facultyOptions, interactionTypes, getFacultiesNames, getInteractions } from './utils/mixDataManager';
 
-const scopeOptions = [
-	{ value: 'all', label: 'Університет' },
-	{ value: 'facult', label: 'Факультети' },
-	{ value: 'katedra', label: 'Кафедри' }
-];
+type Options = {
+	facult: string;
+	kathedra: string;
+};
 
 const MixStaistic = (props: any) => {
 	const [data, setData] = React.useState<any>([]);
 	const [DataLoaded, setDataLoaded] = React.useState<boolean>(false);
 	const [statisticLoading, setStatisticLoading] = React.useState<boolean>(false);
-	const [scope, setScope] = React.useState<string>('all');
+	const [options, setOptions] = React.useState<Options>(
+		{
+			facult: 'all',
+			kathedra: 'all',
+		}
+	);
 	const [plot , setPlot] = React.useState<any>(<></>);
 
 	const handleLoad = (data: any, fileInfo: any) => {
@@ -27,56 +33,69 @@ const MixStaistic = (props: any) => {
 		input.value = '';
 		setData([]);
 		setDataLoaded(false);
+		setOptions({
+			facult: 'all',
+			kathedra: 'all',
+		});
 	};
 
-	const changeScope = (value: string) => {
-		setScope(value);
+	const changeOptions = (value: string, input: string) => {
+		if (input === 'facult') {
+			setOptions({
+				...options,
+				kathedra: 'all',
+				[input as keyof Options]: value
+			});
+		} else {
+			setOptions({
+				...options,
+				[input as keyof Options]: value
+			});
+		}
+	};
+
+	const getKathedraOptions = (facult: string) => {
+		let kathedraList = [] as { value: string; label: string }[];
+		data.map((item: any) => {
+			if (item['code_div']) {
+				let facultId = item['code_div'].split('.')[0];
+				if (facultId === facult) {
+					if (!kathedraList.some((kathedra: any) => kathedra.value === item['code_div'])) {
+						kathedraList.push({value: item['code_div'], label: item['name_div']});
+					}
+				}
+			}
+		});
+		kathedraList.unshift({value: 'all', label: 'Всі'});
+		return kathedraList;
+	};
+
+	const generatePlot = useCallback(() => {
 		setStatisticLoading(true);
-		if (value === 'all') {
-			setPlot(getUniversityStatistic());
+		if (options.facult == 'all' && options.kathedra == 'all') {
+			const facultetNames = getFacultiesNames(data);
+			const interactions = getInteractions(data, 'facultet');
+			const plotData = {
+				faculties: facultetNames,
+				interactions: interactions,
+				interactionTypes: interactionTypes,
+				max: Math.max(...interactions.flat()) + 100
+			};
+	
+			setPlot(
+				<>
+					<BarChart data={plotData} />
+				</>
+			);
 		} else {
 			setPlot(<></>);
 		}
 		setStatisticLoading(false);
-	};
-
-	const getUniversityStatistic = useCallback(() => {
-		let totalActivity = 0;
-		let katedraList = [] as any;
-		let facultList = [] as any;
-		data.map((item: any) => {
-			if (parseInt(item['Підсумок активностей'])) {
-				totalActivity += parseInt(item['Підсумок активностей']);
-			}
-			if (item['code_div']) {
-				if (!katedraList.includes(item['code_div'])) {
-					katedraList.push(item['code_div']);
-				}
-				let facultId = item['code_div'].split('.')[0];
-				if (!facultList.includes(facultId)) {
-					facultList.push(facultId);
-				}
-			}
-		});
-		return (
-			<div className={style.plotRowAll}>
-				<div className={style.plotRowItemHeader}>Всього активностей</div>
-				<div className={style.plotRowItemValue}>{totalActivity}</div>
-				<div className={style.plotRowItemHeader}>Кількість кафедр</div>
-				<div className={style.plotRowItemValue}>{katedraList.length}</div>
-				<div className={style.plotRowItemHeader}>Кількість факультетів</div>
-				<div className={style.plotRowItemValue}>{facultList.length}</div>
-			</div>
-		)
-	}, [data]);
+	}, [options, data]);
 
 	useEffect(() => {
-		if (DataLoaded) {
-			setStatisticLoading(true);
-			setPlot(getUniversityStatistic());
-			setStatisticLoading(false);
-		}
-	}, [DataLoaded, getUniversityStatistic]);
+		generatePlot();
+	}, [generatePlot]);
 
 	const content = (
 		<>
@@ -84,14 +103,26 @@ const MixStaistic = (props: any) => {
 				<div className={style.contentHeader}>Активності на платформі</div>
 				<div className={style.contentDescription}>Керуйте параметрами відображення за допомогою налаштуваннь нижче</div>
 				<div className={style.contentControlContainer}>
-					<div className={style.controlDescription}>Вибірка:</div>
+					<div className={style.controlDescription}>Факультет:</div>
 					<Dropdown
-						options={scopeOptions}
-						value={scopeOptions[0]}
+						options={facultyOptions}
+						value={facultyOptions[0]}
 						controlClassName={style.dropdown}
 						menuClassName={style.dropdownMenu}
-						onChange={(option: any) => changeScope(option.value)}
+						onChange={(option: any) => changeOptions(option.value, 'facult')}
 					/>
+					{options.facult !== 'all' && (
+						<>
+							<div className={style.controlDescription}>Кафедра:</div>
+							<Dropdown
+								options={getKathedraOptions(options.facult)}
+								value={options.kathedra}
+								controlClassName={style.dropdown}
+								menuClassName={style.dropdownMenu}
+								onChange={(option: any) => changeOptions(option.value, 'kathedra')}
+							/>
+						</>
+					)}
 				</div>
 			</div>
 			<div className={style.plotRow}>
