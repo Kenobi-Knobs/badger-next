@@ -5,20 +5,43 @@ Chart.register(...registerables);
 
 interface FacultyInteractionChartProps {
 	data: {
-		faculties: string[];
+		entities: string[];
 		interactions: number[][];
 		interactionTypes: string[];
 		max: number;
 	};
 }
 
+const strToArray = (str: string, limit: number) => {
+	const words = str.split(' ')
+	let aux = []
+	let concat = []
+
+	for (let i = 0; i < words.length; i++) {
+		concat.push(words[i])
+		let join = concat.join(' ')
+		if (join.length > limit) {
+			aux.push(join)
+			concat = []
+		}
+	}
+
+	if (concat.length) {
+		aux.push(concat.join(' ').trim())
+	}
+
+	return aux
+}
+
 const BarChart: React.FC<FacultyInteractionChartProps> = ({
 	data
 }) => {
-	const { faculties, interactions, interactionTypes, max } = data;
+	const { entities, interactions, interactionTypes, max } = data;
 
 	const chartData = {
-		labels: faculties,
+		labels: entities.map((entity) => {
+			return strToArray(entity, 15);
+		}),
 		datasets: interactionTypes.map((type, index) => ({
 			label: type,
 			data: interactions.map((interaction) => interaction[index]),
@@ -30,12 +53,25 @@ const BarChart: React.FC<FacultyInteractionChartProps> = ({
 		})),
 	};
 
+	console.log(chartData.labels);
+
 	const chartOptions = {
 		scales: {
 			y: {
+				stacked: true,
 				beginAtZero: true,
-				max: max,
 			},
+			x: {
+				stacked: true,
+			}
+		},
+		plugins: {
+			legend: {
+				position: 'top' as const,
+			},
+			label: {
+				display: false,
+			}
 		},
 		maintainAspectRatio: false
 	};

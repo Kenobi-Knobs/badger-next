@@ -2,13 +2,15 @@
 import CSVReader from 'react-csv-reader';
 import style from './styles/mixStatistic.module.css';
 import Dropdown from 'react-dropdown';
+import Select from 'react-select';
 import 'react-dropdown/style.css';
 import BarChart from './components/BarChart';
-import { facultyOptions, interactionTypes, getFacultiesNames, getInteractions } from './utils/mixDataManager';
+import { facultyOptions, interactionTypes, getFacultiesNames, getInteractions, getKathedraOptions, getTeacherListByKathedra } from './utils/mixDataManager';
 
 type Options = {
 	facult: string;
 	kathedra: string;
+	teacher: string;
 };
 
 const MixStaistic = (props: any) => {
@@ -19,6 +21,7 @@ const MixStaistic = (props: any) => {
 		{
 			facult: 'all',
 			kathedra: 'all',
+			teacher: '',
 		}
 	);
 	const [plot , setPlot] = React.useState<any>(<></>);
@@ -36,6 +39,7 @@ const MixStaistic = (props: any) => {
 		setOptions({
 			facult: 'all',
 			kathedra: 'all',
+			teacher: '',
 		});
 	};
 
@@ -46,6 +50,12 @@ const MixStaistic = (props: any) => {
 				kathedra: 'all',
 				[input as keyof Options]: value
 			});
+		} else if (input === 'kathedra') {
+			setOptions({
+				...options,
+				teacher: '',
+				[input as keyof Options]: value
+			});
 		} else {
 			setOptions({
 				...options,
@@ -54,42 +64,63 @@ const MixStaistic = (props: any) => {
 		}
 	};
 
-	const getKathedraOptions = (facult: string) => {
-		let kathedraList = [] as { value: string; label: string }[];
-		data.map((item: any) => {
-			if (item['code_div']) {
-				let facultId = item['code_div'].split('.')[0];
-				if (facultId === facult) {
-					if (!kathedraList.some((kathedra: any) => kathedra.value === item['code_div'])) {
-						kathedraList.push({value: item['code_div'], label: item['name_div']});
-					}
-				}
-			}
-		});
-		kathedraList.unshift({value: 'all', label: 'Всі'});
-		return kathedraList;
-	};
-
 	const generatePlot = useCallback(() => {
 		setStatisticLoading(true);
 		if (options.facult == 'all' && options.kathedra == 'all') {
 			const facultetNames = getFacultiesNames(data);
-			const interactions = getInteractions(data, 'facultet');
+			const interactions = getInteractions(data, 'facultet', []);
 			const plotData = {
-				faculties: facultetNames,
+				entities: facultetNames,
 				interactions: interactions,
 				interactionTypes: interactionTypes,
-				max: Math.max(...interactions.flat()) + 100
+				max: Math.max(...interactions.flat()) + 10000
 			};
-	
 			setPlot(
 				<>
 					<BarChart data={plotData} />
 				</>
 			);
-		} else {
-			setPlot(<></>);
+		} else if (options.facult != 'all' && options.kathedra == 'all') {
+			let kathedraNames = getKathedraOptions(data, options.facult).map((item: any) => item.label);
+			kathedraNames.shift();
+			const kathedraIds = getKathedraOptions(data, options.facult).map((item: any) => item.value) as [];
+			kathedraIds.shift();
+			if (kathedraIds.length == 0) {
+				setPlot(
+					<>
+						<div className={style.noDataPlot}>
+							<div className={style.noDataHeader}>🤷‍♂️ Немає даних</div>
+							<div className={style.noDataDescription}>Для вибраного факультету немає даних</div>
+						</div>
+					</>
+				);
+				setStatisticLoading(false);
+				return;
+			}
+			const interactions = getInteractions(data, 'kathedra', kathedraIds);
+			const plotData = {
+				entities: kathedraNames,
+				interactions: interactions,
+				interactionTypes: interactionTypes,
+				max: Math.max(...interactions.flat()) + 10000
+			};
+			setPlot(
+				<>
+					<BarChart data={plotData} />
+				</>
+			);
+		} else if (options.facult != 'all' && options.kathedra != 'all') {
+			setPlot(
+				<>
+					<div className={style.noDataPlot}>
+						<div className={style.noDataHeader}>✍️ Оберіть викладача</div>
+						<div className={style.noDataDescription}>Оберіть викладача по якому потрібно отримати дані для відображення</div>
+					</div>
+				</>
+			);
 		}
+
+
 		setStatisticLoading(false);
 	}, [options, data]);
 
@@ -115,13 +146,25 @@ const MixStaistic = (props: any) => {
 						<>
 							<div className={style.controlDescription}>Кафедра:</div>
 							<Dropdown
-								options={getKathedraOptions(options.facult)}
+								options={getKathedraOptions(data, options.facult)}
 								value={options.kathedra}
 								controlClassName={style.dropdown}
 								menuClassName={style.dropdownMenu}
 								onChange={(option: any) => changeOptions(option.value, 'kathedra')}
 							/>
 						</>
+					)}
+					{options.kathedra !== 'all' && (
+						<>
+						<div className={style.controlDescription}>Викладач:</div>
+						<Select
+							options={getTeacherListByKathedra(data, options.kathedra)}
+							value={{value: options.teacher, label: options.teacher}}
+							onChange={(option: any) => changeOptions(option.value, 'teacher')}
+							isSearchable={true}
+							className={style.selectSearch}
+						/>
+					</>
 					)}
 				</div>
 			</div>

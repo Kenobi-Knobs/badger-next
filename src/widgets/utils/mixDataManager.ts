@@ -51,14 +51,57 @@ export const getFacultiesNames = (data: any) => {
 	return facultetNames;
 };
 
-export const getInteractions = (data: any, type: string) => {
+export const getKathedraOptions = (data: any, facult: string) => {
+	let kathedraList = [] as { value: string; label: string }[];
+	data.map((item: any) => {
+		if (item['code_div']) {
+			let facultId = item['code_div'].split('.')[0];
+			if (facultId === facult) {
+				if (!kathedraList.some((kathedra: any) => kathedra.value === item['code_div'])) {
+					kathedraList.push({value: item['code_div'], label: item['name_div']});
+				}
+			}
+		}
+	});
+	kathedraList.unshift({value: 'all', label: 'Всі'});
+	return kathedraList;
+};
 
-	let facultetIds = getFacultetIds(data);
-	
+
+export const getInteractions = (data: any, type: string, dataSet: []) => {
 	let interactions = [] as any[];
-	facultetIds.map((facultetId: string) => {
-		let facultetInteractions = getInteractionsByFacultet(data, facultetId);
-		interactions.push(facultetInteractions);
+	if (type === 'facultet') {
+		let facultetIds = getFacultetIds(data);
+		facultetIds.map((facultetId: string) => {
+			let facultetInteractions = getInteractionsByFacultet(data, facultetId);
+			interactions.push(facultetInteractions);
+		});
+	} else if (type === 'kathedra') {
+		dataSet.map((kathedra: any) => {
+			let kathedraInteractions = getInteractionsByKathedra(data, kathedra);
+			interactions.push(kathedraInteractions);
+		});
+	}
+
+	return interactions;
+}
+
+export const getInteractionsByKathedra = (data: any, id: string) => {
+	let interactions = [] as any[];
+	interactionTypes.map((type: string) => {
+		interactions.push(0);
+	});
+
+	data.map((item: any) => {
+		if (item['code_div']) {
+			if (item['code_div'] === id) {
+				for (let i = 0; i < interactionTypes.length; i++) {
+					if (parseInt(item[interactionTypes[i]])) {
+						interactions[i] += parseInt(item[interactionTypes[i]]);
+					}
+				}
+			}
+		}
 	});
 
 	return interactions;
@@ -86,4 +129,24 @@ export const getInteractionsByFacultet = (data: any, id: string) => {
 	return interactions;
 }
 
-
+export const getTeacherListByKathedra = (data: any, id: string) => {
+	let teachers = [] as any[];
+	data.map((item: any) => {
+		if (item['code_div']) {
+			if (item['code_div'] === id) {
+				//get teachers from string {teacher, teacher1, teache2}
+				let teacherList = item['tutors'].split(',');
+				teacherList.map((teacher: string) => {
+					//remove '{' and '}'
+					teacher = teacher.replace('{', '');
+					teacher = teacher.replace('}', '');
+					//add teacher to array if not exist
+					if (!teachers.some((item: any) => item.value === teacher)) {
+						teachers.push({value: teacher, label: teacher});
+					}
+				});
+			}
+		}
+	});
+	return teachers;
+}
