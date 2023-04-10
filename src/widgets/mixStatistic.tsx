@@ -5,7 +5,7 @@ import Dropdown from 'react-dropdown';
 import Select from 'react-select';
 import 'react-dropdown/style.css';
 import BarChart from './components/BarChart';
-import { facultyOptions, interactionTypes, getFacultiesNames, getInteractions, getKathedraOptions, getTeacherListByKathedra } from './utils/mixDataManager';
+import { facultyOptions, interactionTypes, getFacultiesNames, getInteractions, getKathedraOptions, getTeacherListByKathedra, getGroupNamesByTeacher } from './utils/mixDataManager';
 
 type Options = {
 	facult: string;
@@ -73,7 +73,8 @@ const MixStaistic = (props: any) => {
 				entities: facultetNames,
 				interactions: interactions,
 				interactionTypes: interactionTypes,
-				max: Math.max(...interactions.flat()) + 10000
+				max: Math.max(...interactions.flat()) + 10000,
+				rotate: 0,
 			};
 			setPlot(
 				<>
@@ -102,14 +103,15 @@ const MixStaistic = (props: any) => {
 				entities: kathedraNames,
 				interactions: interactions,
 				interactionTypes: interactionTypes,
-				max: Math.max(...interactions.flat()) + 10000
+				max: Math.max(...interactions.flat()) + 10000,
+				rotate: 0,
 			};
 			setPlot(
 				<>
 					<BarChart data={plotData} />
 				</>
 			);
-		} else if (options.facult != 'all' && options.kathedra != 'all') {
+		} else if (options.facult != 'all' && options.kathedra != 'all' && options.teacher == '') {
 			setPlot(
 				<>
 					<div className={style.noDataPlot}>
@@ -118,8 +120,26 @@ const MixStaistic = (props: any) => {
 					</div>
 				</>
 			);
+		} else if (options.teacher != '') {
+			const groupNames = getGroupNamesByTeacher(data, options.teacher) as [];
+			const interactions = getInteractions(data, 'teacher', groupNames, options.teacher);
+			let rotate = 0;
+			if (groupNames.length > 10) {
+				rotate = 90;
+			}
+			const plotData = {
+				entities: groupNames,
+				interactions: interactions,
+				interactionTypes: interactionTypes,
+				max: Math.max(...interactions.flat()) + 10000,
+				rotate: rotate
+			};
+			setPlot(
+				<>
+					<BarChart data={plotData} />
+				</>
+			);
 		}
-
 
 		setStatisticLoading(false);
 	}, [options, data]);

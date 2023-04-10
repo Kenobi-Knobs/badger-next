@@ -1,7 +1,11 @@
 ﻿import React from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from 'chart.js';
+import 'chartjs-plugin-zoom';
+import zoomPlugin from 'chartjs-plugin-zoom';
 Chart.register(...registerables);
+Chart.register(zoomPlugin);
+
 
 interface FacultyInteractionChartProps {
 	data: {
@@ -9,6 +13,7 @@ interface FacultyInteractionChartProps {
 		interactions: number[][];
 		interactionTypes: string[];
 		max: number;
+		rotate: number;
 	};
 }
 
@@ -36,11 +41,11 @@ const strToArray = (str: string, limit: number) => {
 const BarChart: React.FC<FacultyInteractionChartProps> = ({
 	data
 }) => {
-	const { entities, interactions, interactionTypes, max } = data;
+	const { entities, interactions, interactionTypes, max, rotate } = data;
 
 	const chartData = {
 		labels: entities.map((entity) => {
-			return strToArray(entity, 15);
+			return strToArray(entity, 30);
 		}),
 		datasets: interactionTypes.map((type, index) => ({
 			label: type,
@@ -53,16 +58,28 @@ const BarChart: React.FC<FacultyInteractionChartProps> = ({
 		})),
 	};
 
-	console.log(chartData.labels);
-
 	const chartOptions = {
 		scales: {
 			y: {
 				stacked: true,
 				beginAtZero: true,
+				ticks: {
+					font : {
+						size: 10
+					}
+				}
 			},
 			x: {
+				type: 'category' as const,
 				stacked: true,
+				ticks: {
+					autoSkip: false,
+					minRotation: rotate,
+					maxRotation: 90,
+					font : {
+						size: 10
+					}
+				},
 			}
 		},
 		plugins: {
@@ -71,6 +88,12 @@ const BarChart: React.FC<FacultyInteractionChartProps> = ({
 			},
 			label: {
 				display: false,
+			},
+			zoom: {
+				pan: {
+					enabled: true,
+					mode: 'x' as const,
+				},
 			}
 		},
 		maintainAspectRatio: false

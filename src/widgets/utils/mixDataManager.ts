@@ -68,7 +68,7 @@ export const getKathedraOptions = (data: any, facult: string) => {
 };
 
 
-export const getInteractions = (data: any, type: string, dataSet: []) => {
+export const getInteractions = (data: any, type: string, dataSet: [], teacher = '') => {
 	let interactions = [] as any[];
 	if (type === 'facultet') {
 		let facultetIds = getFacultetIds(data);
@@ -81,7 +81,32 @@ export const getInteractions = (data: any, type: string, dataSet: []) => {
 			let kathedraInteractions = getInteractionsByKathedra(data, kathedra);
 			interactions.push(kathedraInteractions);
 		});
+	} else if (type === 'teacher') {
+		debugger;
+		dataSet.map((group: any) => {
+			let groupInteractions = getGroupInteractions(data, group, teacher);
+			interactions.push(groupInteractions);
+		});
 	}
+
+	return interactions;
+}
+
+export const getGroupInteractions = (data: any, group: string, teacher: string) => {
+	let interactions = [] as any[];
+	interactionTypes.map((type: string) => {
+		interactions.push(0);
+	});
+
+	data.map((item: any) => {
+		if (item['tutors'] && item['tutors'].includes(teacher) && item['title'] === group) {
+			for (let i = 0; i < interactionTypes.length; i++) {
+				if (parseInt(item[interactionTypes[i]])) {
+					interactions[i] += parseInt(item[interactionTypes[i]]);
+				}
+			}
+		}
+	});
 
 	return interactions;
 }
@@ -127,6 +152,19 @@ export const getInteractionsByFacultet = (data: any, id: string) => {
 	});
 
 	return interactions;
+}
+ 
+export const getGroupNamesByTeacher = (data: any, teacher: string) => {
+	let groups = [] as any[];
+	data.map((item: any) => {
+		if (item['tutors'] && item['tutors'].includes(teacher)) {
+
+			if (!groups.some((group: any) => group === item['title'])) {
+				groups.push(item['title']);
+			}
+		}
+	});
+	return groups;
 }
 
 export const getTeacherListByKathedra = (data: any, id: string) => {
