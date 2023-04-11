@@ -82,7 +82,6 @@ export const getInteractions = (data: any, type: string, dataSet: [], teacher = 
 			interactions.push(kathedraInteractions);
 		});
 	} else if (type === 'teacher') {
-		debugger;
 		dataSet.map((group: any) => {
 			let groupInteractions = getGroupInteractions(data, group, teacher);
 			interactions.push(groupInteractions);

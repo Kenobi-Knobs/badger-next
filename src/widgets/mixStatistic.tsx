@@ -1,11 +1,21 @@
-﻿import React, { CSSProperties, useEffect, useCallback } from 'react';
+﻿import React, { CSSProperties, useEffect, useCallback, useRef } from 'react';
 import CSVReader from 'react-csv-reader';
 import style from './styles/mixStatistic.module.css';
 import Dropdown from 'react-dropdown';
 import Select from 'react-select';
 import 'react-dropdown/style.css';
 import BarChart from './components/BarChart';
-import { facultyOptions, interactionTypes, getFacultiesNames, getInteractions, getKathedraOptions, getTeacherListByKathedra, getGroupNamesByTeacher } from './utils/mixDataManager';
+import {
+	facultyOptions,
+	interactionTypes,
+	getFacultiesNames,
+	getInteractions,
+	getKathedraOptions,
+	getTeacherListByKathedra,
+	getGroupNamesByTeacher
+} from './utils/mixDataManager';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 type Options = {
 	facult: string;
@@ -17,6 +27,7 @@ const MixStaistic = (props: any) => {
 	const [data, setData] = React.useState<any>([]);
 	const [DataLoaded, setDataLoaded] = React.useState<boolean>(false);
 	const [statisticLoading, setStatisticLoading] = React.useState<boolean>(false);
+	const [tab, setTab] = React.useState<string>('detail');
 	const [options, setOptions] = React.useState<Options>(
 		{
 			facult: 'all',
@@ -73,12 +84,11 @@ const MixStaistic = (props: any) => {
 				entities: facultetNames,
 				interactions: interactions,
 				interactionTypes: interactionTypes,
-				max: Math.max(...interactions.flat()) + 10000,
 				rotate: 0,
 			};
 			setPlot(
 				<>
-					<BarChart data={plotData} />
+					<BarChart data={plotData}/>
 				</>
 			);
 		} else if (options.facult != 'all' && options.kathedra == 'all') {
@@ -103,12 +113,11 @@ const MixStaistic = (props: any) => {
 				entities: kathedraNames,
 				interactions: interactions,
 				interactionTypes: interactionTypes,
-				max: Math.max(...interactions.flat()) + 10000,
 				rotate: 0,
 			};
 			setPlot(
 				<>
-					<BarChart data={plotData} />
+					<BarChart data={plotData}/>
 				</>
 			);
 		} else if (options.facult != 'all' && options.kathedra != 'all' && options.teacher == '') {
@@ -131,12 +140,11 @@ const MixStaistic = (props: any) => {
 				entities: groupNames,
 				interactions: interactions,
 				interactionTypes: interactionTypes,
-				max: Math.max(...interactions.flat()) + 10000,
-				rotate: rotate
+				rotate: rotate,
 			};
 			setPlot(
 				<>
-					<BarChart data={plotData} />
+					<BarChart data={plotData}/>
 				</>
 			);
 		}
@@ -195,9 +203,36 @@ const MixStaistic = (props: any) => {
 						<div className={style.plotLoadingDescription}>зачекайте, будь ласка</div>
 					</div>
 				) : (
-					<div className={style.plotContainer}>
-						{plot}
-					</div>
+					<>
+						<Tabs
+							classes={{indicator: style.tabsIndicator}}
+							value={tab}
+							onChange={(event: React.SyntheticEvent, newValue: string) => setTab(newValue)}
+							className={style.tabs}
+							>
+							<Tab
+								classes = {{root: style.tab, selected: style.tabSelected}}
+								value='detail'
+								label='Детально'
+							/>
+							<Tab
+								classes = {{root: style.tab, selected: style.tabSelected}}
+								value='total'
+								label='Загально'
+							/>
+						</Tabs>
+						<div className={style.plotContainer}>
+							{tab === 'total' ? (
+								<div className={style.totalContainer}>
+									<div className={style.totalHeader}>Всього активностей:</div>
+								</div>
+							) : (
+								<>
+									{plot}
+								</>
+							)}
+						</div>
+					</>
 				)}
 			</div>
 		</>
