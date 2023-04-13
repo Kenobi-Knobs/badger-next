@@ -23,6 +23,38 @@ export const interactionTypes = [
 	'Оцінка повідомлень в обговореннях'
 ];
 
+export const getTotalInteractions = (interactions: number[][]) => {
+	let totalInteractions = [] as number[];
+	for (let i = 0; i < interactionTypes.length; i++) {
+		totalInteractions.push(0);
+	}
+	for (let i = 0; i < interactions.length; i++) {
+		for (let j = 0; j < interactions[i].length; j++) {
+			totalInteractions[j] += interactions[i][j];
+		}
+	}
+	return totalInteractions;
+};
+
+export const getTotalInteractionsByKathedra = (data: any, kathedra: string) => {
+	let interactions = [] as any[];
+	interactionTypes.map((type: string) => {
+		interactions.push(0);
+	});
+
+	data.map((item: any) => {
+		if (item['code_div'] === kathedra) {
+			for (let i = 0; i < interactionTypes.length; i++) {
+				if (parseInt(item[interactionTypes[i]])) {
+					interactions[i] += parseInt(item[interactionTypes[i]]);
+				}
+			}
+		}
+	});
+
+	return interactions;
+}
+
 export const getFacultetIds = (data: any) => {
 	// get all uniq faculties id from data
 	let facultetIds = [] as string[];

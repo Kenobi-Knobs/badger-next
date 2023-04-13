@@ -167,7 +167,7 @@ const BarChart: React.FC<FacultyInteractionChartProps> = ({
 		<>
 			{plotControl}
 			<div>
-				<Bar ref={chartRef} data={chartData} options={chartOptions} height={500}/>
+				<Bar ref={chartRef} data={chartData} options={chartOptions} height={480}/>
 			</div>
 		</>
 

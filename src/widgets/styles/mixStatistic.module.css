@@ -234,3 +234,28 @@
 .indicator {
 	background-color: rgb(67, 67, 67) !important;
 }
+
+.total {
+	margin-top: 25px;
+}
+
+.totalHeader {
+	margin-bottom: 8px;
+	font-size: 1rem;
+}
+
+.totalItem {
+	display: flex;
+	font-size: 0.8rem;
+	margin-bottom: 5px;
+	width: 60%;
+	border-bottom: 1px dotted rgb(211, 211, 211);
+}
+
+.totalItemName {
+	color:rgb(126, 126, 126)
+}
+
+.totalItemValue {
+	margin-left: auto;
+}

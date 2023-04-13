@@ -12,7 +12,9 @@ import {
 	getInteractions,
 	getKathedraOptions,
 	getTeacherListByKathedra,
-	getGroupNamesByTeacher
+	getGroupNamesByTeacher,
+	getTotalInteractions,
+	getTotalInteractionsByKathedra,
 } from './utils/mixDataManager';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -36,6 +38,7 @@ const MixStaistic = (props: any) => {
 		}
 	);
 	const [plot , setPlot] = React.useState<any>(<></>);
+	const [total, setTotal] = React.useState<any>(<></>);
 
 	const handleLoad = (data: any, fileInfo: any) => {
 		setData(data);
@@ -86,6 +89,21 @@ const MixStaistic = (props: any) => {
 				interactionTypes: interactionTypes,
 				rotate: 0,
 			};
+			let totalInteractions = getTotalInteractions(interactions);
+			setTotal(
+				<div className={style.total}>
+					<div className={style.totalHeader}>Всього по університету:</div>
+					{interactionTypes.map((item: any, index: number) => {
+						return (
+							<div className={style.totalItem} key={index}>
+								<div className={style.totalItemName}>{item}:</div>
+								<div className={style.totalItemValue}>{totalInteractions[index]}</div>
+							</div>
+						);
+					})
+					}
+				</div>
+			);
 			setPlot(
 				<>
 					<BarChart data={plotData}/>
@@ -97,6 +115,14 @@ const MixStaistic = (props: any) => {
 			const kathedraIds = getKathedraOptions(data, options.facult).map((item: any) => item.value) as [];
 			kathedraIds.shift();
 			if (kathedraIds.length == 0) {
+				setTotal(
+					<>
+						<div className={style.noDataPlot}>
+							<div className={style.noDataHeader}>🤷‍♂️ Немає даних</div>
+							<div className={style.noDataDescription}>Для вибраного факультету немає даних</div>
+						</div>
+					</>
+				);
 				setPlot(
 					<>
 						<div className={style.noDataPlot}>
@@ -115,12 +141,42 @@ const MixStaistic = (props: any) => {
 				interactionTypes: interactionTypes,
 				rotate: 0,
 			};
+			let totalInteractions = getTotalInteractions(interactions);
+			setTotal(
+				<div className={style.total}>
+					<div className={style.totalHeader}>Всього по факультету:</div>
+					{interactionTypes.map((item: any, index: number) => {
+						return (
+							<div className={style.totalItem} key={index}>
+								<div className={style.totalItemName}>{item}:</div>
+								<div className={style.totalItemValue}>{totalInteractions[index]}</div>
+							</div>
+						);
+					})
+					}
+				</div>
+			);
 			setPlot(
 				<>
 					<BarChart data={plotData}/>
 				</>
 			);
 		} else if (options.facult != 'all' && options.kathedra != 'all' && options.teacher == '') {
+			const totalInteractions = getTotalInteractionsByKathedra(data, options.kathedra);
+			setTotal(
+				<div className={style.total}>
+					<div className={style.totalHeader}>Всього по факультету:</div>
+					{interactionTypes.map((item: any, index: number) => {
+						return (
+							<div className={style.totalItem} key={index}>
+								<div className={style.totalItemName}>{item}:</div>
+								<div className={style.totalItemValue}>{totalInteractions[index]}</div>
+							</div>
+						);
+					})
+					}
+				</div>
+			);
 			setPlot(
 				<>
 					<div className={style.noDataPlot}>
@@ -142,6 +198,21 @@ const MixStaistic = (props: any) => {
 				interactionTypes: interactionTypes,
 				rotate: rotate,
 			};
+			let totalInteractions = getTotalInteractions(interactions);
+			setTotal(
+				<div className={style.total}>
+					<div className={style.totalHeader}>Всього по викладачу:</div>
+					{interactionTypes.map((item: any, index: number) => {
+						return (
+							<div className={style.totalItem} key={index}>
+								<div className={style.totalItemName}>{item}:</div>
+								<div className={style.totalItemValue}>{totalInteractions[index]}</div>
+							</div>
+						);
+					})
+					}
+				</div>
+			);
 			setPlot(
 				<>
 					<BarChart data={plotData}/>
@@ -205,7 +276,10 @@ const MixStaistic = (props: any) => {
 				) : (
 					<>
 						<Tabs
-							classes={{indicator: style.tabsIndicator}}
+							TabIndicatorProps={{
+								title: 'indicator',
+								sx: { backgroundColor: '#7f7f7f' }
+							}}
 							value={tab}
 							onChange={(event: React.SyntheticEvent, newValue: string) => setTab(newValue)}
 							className={style.tabs}
@@ -223,9 +297,9 @@ const MixStaistic = (props: any) => {
 						</Tabs>
 						<div className={style.plotContainer}>
 							{tab === 'total' ? (
-								<div className={style.totalContainer}>
-									<div className={style.totalHeader}>Всього активностей:</div>
-								</div>
+								<>
+									{total}
+								</>
 							) : (
 								<>
 									{plot}
