@@ -18,6 +18,7 @@ import {
 } from './utils/mixDataManager';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import { toast } from 'react-toastify';
 
 type Options = {
 	facult: string;
@@ -30,6 +31,8 @@ const MixStaistic = (props: any) => {
 	const [DataLoaded, setDataLoaded] = React.useState<boolean>(false);
 	const [statisticLoading, setStatisticLoading] = React.useState<boolean>(false);
 	const [tab, setTab] = React.useState<string>('detail');
+	const [fileName, setFileName] = React.useState<string>('');
+	const [loadedFromStorage, setLoadedFromStorage] = React.useState<boolean>(false);
 	const [options, setOptions] = React.useState<Options>(
 		{
 			facult: 'all',
@@ -40,12 +43,46 @@ const MixStaistic = (props: any) => {
 	const [plot , setPlot] = React.useState<any>(<></>);
 	const [total, setTotal] = React.useState<any>(<></>);
 
+	const saveState = (remove: boolean) => {
+		if (remove) {
+			localStorage.removeItem('mixStatistic');
+			toast.success('Дані видалено', {
+				position: 'bottom-center'
+			});
+			return;
+		} else {
+			const state = {
+				data: data,
+				options: options,
+				fileName: fileName,
+			};
+			localStorage.setItem('mixStatistic', JSON.stringify(state));
+			toast.success('Дані збережено', {
+				position: 'bottom-center'
+			});
+		}
+	};
+
+	const loadState = () => {
+		const state = JSON.parse(localStorage.getItem('mixStatistic') as string);
+		if (state) {
+			setFileName(state.fileName);
+			setData(state.data);
+			setOptions(state.options);
+			setDataLoaded(true);
+			setLoadedFromStorage(true);
+		}
+	};
+
 	const handleLoad = (data: any, fileInfo: any) => {
+		setFileName(fileInfo.name);
 		setData(data);
 		setDataLoaded(true);
 	};
 
 	const removeFile = () => {
+		saveState(true);
+		setLoadedFromStorage(false)
 		const input = document.getElementById('csv-input') as HTMLInputElement;
 		input.value = '';
 		setData([]);
@@ -227,6 +264,10 @@ const MixStaistic = (props: any) => {
 		generatePlot();
 	}, [generatePlot]);
 
+	useEffect(() => {
+		loadState();
+	}, []);
+
 	const content = (
 		<>
 			<div className={style.controlRow}>
@@ -327,24 +368,44 @@ const MixStaistic = (props: any) => {
 				)}
 			</div>
 			<div className={style.sidebarContainer}>
-				<div className={style.csvInputHeader}>
-					Дані статистики
+				<div className={style.SettingItem}>
+					<div className={style.csvInputHeader}>
+						Дані статистики
+					</div>
+					<div className={style.csvInputDescription}>
+						Виберіть файл з даними статистики MIX формату .csv для відображення в застосунку
+					</div>
+					<div className={style.csvInputContainer}>
+						<CSVReader
+							cssClass={style.csvInput}
+							inputId="csv-input"
+							parserOptions={{ header: true }}
+							onFileLoaded={handleLoad}
+						/>
+						{ (fileName !== '' && loadedFromStorage) && (
+							<div className={style.csvInputFileName}>Файл {fileName} завантажено з сховища</div>
+						)}
+						{ DataLoaded ? (
+							<div className={style.csvInputRemoveButton} onClick={() => removeFile()}>Очистити</div>
+						) : (
+							<div className={style.csvInputRemoveButtonDisabled} onClick={() => removeFile()}>Очистити</div>
+						)}
+					</div>
 				</div>
-				<div className={style.csvInputDescription}>
-					Виберіть файл з даними статистики MIX формату .csv для відображення в застосунку
-				</div>
-				<div className={style.csvInputContainer}>
-					<CSVReader
-						cssClass={style.csvInput}
-						inputId="csv-input"
-						parserOptions={{ header: true }}
-						onFileLoaded={handleLoad}
-					/>
-					{ DataLoaded ? (
-						<div className={style.csvInputRemoveButton} onClick={() => removeFile()}>Очистити</div>
-					) : (
-						<div className={style.csvInputRemoveButtonDisabled} onClick={() => removeFile()}>Очистити</div>
-					)}
+				<div className={style.SettingItem}>
+					<div className={style.csvInputHeader}>
+						Збереження
+					</div>
+					<div className={style.csvInputDescription}>
+							Вибрані дані буде збережено для наступного відкриття застосунку
+					</div>
+					<div className={style.settingBottomRow}>
+						{ data.length > 0 ? (
+							<div className={style.saveButton} onClick={() => saveState(false)}>Зберегти</div>
+						) : (
+							<div className={style.saveButtonDisabled} onClick={() => saveState(false)}>Зберегти</div>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>

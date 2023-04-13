@@ -259,3 +259,48 @@
 .totalItemValue {
 	margin-left: auto;
 }
+
+.SettingItem {
+	padding-bottom: 8px;
+	padding-top: 8px;
+	border-bottom: 1px solid #c1c1c1;
+}
+
+.saveButton {
+	margin-top: 10px;
+	width: fit-content;
+	border: 1px solid rgb(128, 128, 128);
+	color: rgb(128, 128, 128);
+	padding: 4px 8px;
+	font-size: 0.8rem;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.saveButton:hover {
+	color: black;
+	border: 1px solid black;
+	transition-duration: 0.5s;
+}
+
+.saveButtonDisabled {
+	margin-top: 10px;
+	width: fit-content;
+	border: 1px solid rgb(209, 209, 209);
+	color: rgb(195, 195, 195);
+	padding: 4px 8px;
+	font-size: 0.8rem;
+	border-radius: 4px;
+	cursor: default;
+}
+
+.settingBottomRow {
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+.csvInputFileName {
+	font-size: 0.7rem;
+	margin-top: 5px;
+	color: #b5b5b5;
+}
