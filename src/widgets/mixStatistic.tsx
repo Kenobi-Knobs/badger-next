@@ -42,6 +42,7 @@ const MixStaistic = (props: any) => {
 	);
 	const [plot , setPlot] = React.useState<any>(<></>);
 	const [total, setTotal] = React.useState<any>(<></>);
+	const [trelloKey, setTrelloKey] = React.useState<string>('');
 
 	const saveState = (remove: boolean) => {
 		if (remove) {
@@ -55,6 +56,7 @@ const MixStaistic = (props: any) => {
 				data: data,
 				options: options,
 				fileName: fileName,
+				trelloKey: trelloKey
 			};
 			localStorage.setItem('mixStatistic', JSON.stringify(state));
 			toast.success('Дані збережено', {
@@ -69,6 +71,7 @@ const MixStaistic = (props: any) => {
 			setFileName(state.fileName);
 			setData(state.data);
 			setOptions(state.options);
+			setTrelloKey(state.trelloKey);
 			setDataLoaded(true);
 			setLoadedFromStorage(true);
 		}
@@ -143,7 +146,7 @@ const MixStaistic = (props: any) => {
 			);
 			setPlot(
 				<>
-					<BarChart data={plotData}/>
+					<BarChart data={plotData} trelloKey={trelloKey}/>
 				</>
 			);
 		} else if (options.facult != 'all' && options.kathedra == 'all') {
@@ -195,7 +198,7 @@ const MixStaistic = (props: any) => {
 			);
 			setPlot(
 				<>
-					<BarChart data={plotData}/>
+					<BarChart data={plotData} trelloKey={trelloKey}/>
 				</>
 			);
 		} else if (options.facult != 'all' && options.kathedra != 'all' && options.teacher == '') {
@@ -252,13 +255,13 @@ const MixStaistic = (props: any) => {
 			);
 			setPlot(
 				<>
-					<BarChart data={plotData}/>
+					<BarChart data={plotData} trelloKey={trelloKey}/>
 				</>
 			);
 		}
 
 		setStatisticLoading(false);
-	}, [options, data]);
+	}, [options, data, trelloKey]);
 
 	useEffect(() => {
 		generatePlot();
@@ -394,6 +397,22 @@ const MixStaistic = (props: any) => {
 				</div>
 				<div className={style.SettingItem}>
 					<div className={style.csvInputHeader}>
+						Trello
+					</div>
+					<div className={style.csvInputDescription}>
+						Для експорту в Trello додайте ключ авторизації
+					</div>
+					<div className={style.csvInputContainer}>
+						<input
+							className={style.csvInput}
+							type='text'
+							value={trelloKey}
+							onChange={(e) => setTrelloKey(e.target.value)}
+						/>
+					</div>
+				</div>
+				<div className={style.SettingItem}>
+					<div className={style.csvInputHeader}>
 						Збереження
 					</div>
 					<div className={style.csvInputDescription}>
@@ -403,7 +422,7 @@ const MixStaistic = (props: any) => {
 						{ data.length > 0 ? (
 							<div className={style.saveButton} onClick={() => saveState(false)}>Зберегти</div>
 						) : (
-							<div className={style.saveButtonDisabled} onClick={() => saveState(false)}>Зберегти</div>
+							<div className={style.saveButtonDisabled}>Зберегти</div>
 						)}
 					</div>
 				</div>

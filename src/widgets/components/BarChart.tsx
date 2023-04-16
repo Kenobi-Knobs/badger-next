@@ -8,11 +8,25 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import IconButton from '@mui/material/IconButton';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 import Tooltip from '@mui/material/Tooltip';
 import { toast } from "react-toastify";
+import { Modal, Box, Typography } from "@mui/material";
+import CreateTrelloCard from "./CreateTrelloCard";
 Chart.register(...registerables);
 Chart.register(zoomPlugin);
 
+const styleModal = {
+	position: 'absolute' as 'absolute',
+	top: '50%',
+	left: '50%',
+	transform: 'translate(-50%, -50%)',
+	width: 400,
+	bgcolor: 'white',
+	border: '1px solid #000',
+	boxShadow: 24,
+	p: 4,
+  };
 
 interface FacultyInteractionChartProps {
 	data: {
@@ -20,8 +34,22 @@ interface FacultyInteractionChartProps {
 		interactions: number[][];
 		interactionTypes: string[];
 		rotate: number;
-	};
+	},
+	trelloKey: string;
 }
+
+const colors = [
+	'rgba(255, 0, 0, 0.6)',
+	'rgba(0, 255, 0, 0.6)',
+	'rgba(0, 0, 255, 0.6)',
+	'rgba(255, 255, 0, 0.6)',
+	'rgba(255, 0, 255, 0.6)',
+	'rgba(0, 255, 255, 0.6)',
+	'rgba(255, 128, 0, 0.6)',
+	'rgba(128, 0, 255, 0.6)',
+	'rgba(128, 255, 0, 0.6)',
+	'rgba(0, 255, 128, 0.6)',
+];
 
 const strToArray = (str: string, limit: number) => {
 	const words = str.split(' ')
@@ -45,10 +73,11 @@ const strToArray = (str: string, limit: number) => {
 }
 
 const BarChart: React.FC<FacultyInteractionChartProps> = ({
-	data
+	data, trelloKey
 }) => {
 	const { entities, interactions, interactionTypes, rotate} = data;
 	const [stacked, setStacked] = React.useState<boolean>(true);
+	const [modalOpen, setModalOpen] = React.useState<boolean>(false);
 	const chartRef = React.useRef<Chart<"bar", number[], string[]>>(null);
 
 	const saveImageToClipBoard = () => {
@@ -82,11 +111,7 @@ const BarChart: React.FC<FacultyInteractionChartProps> = ({
 		datasets: interactionTypes.map((type, index) => ({
 			label: type,
 			data: interactions.map((interaction) => interaction[index]),
-			backgroundColor: `rgba(${Math.floor(
-				Math.random() * 256
-			)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
-				Math.random() * 256
-			)}, 0.6)`,
+			backgroundColor: colors[index],
 		})),
 	};
 
@@ -153,13 +178,27 @@ const BarChart: React.FC<FacultyInteractionChartProps> = ({
 					onChange={() => setStacked(!stacked)}
 					className={style.switch}
 				/>
-				<Tooltip title="Експортувати як картинку в буфер">
-					<IconButton aria-label="copyImage" onClick={() => saveImageToClipBoard()}>
-						<ContentCopyIcon className={style.contentCopyIcon}/>
-					</IconButton>
-				</Tooltip>
-				
+				<div>
+					<Tooltip title="Створити картку в Trello">
+						<IconButton aria-label="addСard" onClick={() => setModalOpen(true)}>
+							<DashboardCustomizeIcon className={style.contentCopyIcon}/>
+						</IconButton>
+					</Tooltip>
+					<Tooltip title="Експортувати як картинку в буфер">
+						<IconButton aria-label="copyImage" onClick={() => saveImageToClipBoard()}>
+							<ContentCopyIcon className={style.contentCopyIcon}/>
+						</IconButton>
+					</Tooltip>
+				</div>
 			</div>
+			<Modal
+				open={modalOpen}
+				onClose={() => setModalOpen(false)}
+			>
+				<Box sx={styleModal}>
+					<CreateTrelloCard trelloKey={trelloKey}/>
+				</Box>
+			</Modal>
 		</>
 	);
 
