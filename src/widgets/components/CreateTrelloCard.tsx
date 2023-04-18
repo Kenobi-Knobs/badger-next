@@ -1,14 +1,15 @@
 ﻿import { Trello } from "trello-for-wolves";
 import React, { useEffect } from "react";
 import style from '../styles/mixStatistic.module.css';
-import Dropdown from 'react-dropdown';
 import Select from 'react-select';
+import { toast } from "react-toastify";
 
 export const CreateTrelloCard = (props: any) => {
 	const [boards, setBoards] = React.useState([]);
 	const [lists, setLists] = React.useState([]);
 	const [board, setBoard] = React.useState('');
-	const [list, setList] = React.useState('');
+	const [list, setList] = React.useState({value: '', label: ''});
+	const [cardName, setCardName] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [trello, setTrello] = React.useState<any>(null);
 
@@ -23,10 +24,35 @@ export const CreateTrelloCard = (props: any) => {
 		setBoard(boardId);
 	};
 
+	const addCardToTrello = async () => {
+		const response = await trello.cards().addCard({
+			name: cardName,
+			idList: list.value,
+			defaultLabels: true,
+			defaultLists: true,
+			keepFromSource: "none",
+		});
+		const card = await response.json();
+		const image = props.image();
+		const responseImage = await trello.cards(card.id).attachments().uploadAttachment({
+			file: image,
+		});
+		const imageResponse = await responseImage.json();
+
+		if (card.id && imageResponse) {
+			toast.success('Картка успішно створена', 
+				{position: toast.POSITION.BOTTOM_CENTER, autoClose: 3000});
+		} else {
+			toast.error('Помилка при створенні картки', 
+				{position: toast.POSITION.BOTTOM_CENTER, autoClose: 3000});
+		}
+		props.closeModal();
+	};
+
 	useEffect(() => {
 		// temporary! need to get trello from server
 		const trello = new Trello({
-			key: 'a7b91a6749d2193c741e222540ce2279',
+			key: props.trelloApiKey,
 			token: props.trelloKey,
 		});
 		trello.members('me').boards().getBoards()
@@ -38,7 +64,7 @@ export const CreateTrelloCard = (props: any) => {
 			.catch(error => {
 				setError(true);
 			});
-	}, [props.trelloKey]);
+	}, [props.trelloKey, props.trelloApiKey]);
 
 	return (
 		<>
@@ -52,7 +78,9 @@ export const CreateTrelloCard = (props: any) => {
 							options={boards.map((board: any) => ({value: board.id, label: board.name}))}
 							onChange={(e: any) => {
 								changeBoard(e.value);
+								setList({value: '', label: ''});
 							}}
+							className={style.selectSearchModal}
 						/>
 						{ board !== '' && (
 							<>
@@ -60,16 +88,35 @@ export const CreateTrelloCard = (props: any) => {
 									Список
 								</div>
 								<Select
+									value={list}
 									options={lists.map((list: any) => ({value: list.id, label: list.name}))}
 									onChange={(e: any) => {
-										setList(e.value);
+										setList({value: e.value, label: e.label});
 									}}
+									className={style.selectSearchModal}
 								/>
 							</>
 						)}
-						{ list !== '' && (
+						{ list.value !== '' && (
 							<>
-								Картка
+								<div className={style.trelloSelectLabel}>
+									Назва *
+								</div>
+								<input className={style.trelloInput} value={cardName} onChange={
+									(e: any) => {
+										setCardName(e.target.value);
+									}
+								}/>
+								<div className={style.trelloDescription}>
+									До картки буде додано сформований Графік
+								</div>
+								<div className={style.trelloButtonContainer}>
+									{ cardName !== '' ? (
+										<div className={style.addCardButton} onClick={() => addCardToTrello()}>Додати картку</div>
+									) : (
+										<div className={style.addCardButtonDisabled}>Додати картку</div>
+									)}
+								</div>
 							</>
 						)}
 					</div>

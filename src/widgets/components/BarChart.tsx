@@ -17,6 +17,7 @@ Chart.register(...registerables);
 Chart.register(zoomPlugin);
 
 const styleModal = {
+	borderRadius: 3,
 	position: 'absolute' as 'absolute',
 	top: '50%',
 	left: '50%',
@@ -36,6 +37,7 @@ interface FacultyInteractionChartProps {
 		rotate: number;
 	},
 	trelloKey: string;
+	trelloApiKey: string;
 }
 
 const colors = [
@@ -73,12 +75,16 @@ const strToArray = (str: string, limit: number) => {
 }
 
 const BarChart: React.FC<FacultyInteractionChartProps> = ({
-	data, trelloKey
+	data, trelloKey, trelloApiKey
 }) => {
 	const { entities, interactions, interactionTypes, rotate} = data;
 	const [stacked, setStacked] = React.useState<boolean>(true);
 	const [modalOpen, setModalOpen] = React.useState<boolean>(false);
 	const chartRef = React.useRef<Chart<"bar", number[], string[]>>(null);
+
+	const closeModal = () => {
+		setModalOpen(false);
+	};
 
 	const saveImageToClipBoard = () => {
 		let chart = chartRef.current;
@@ -102,6 +108,33 @@ const BarChart: React.FC<FacultyInteractionChartProps> = ({
 				}
 			});
 		}
+	};
+
+	function dataURItoBlob(dataURI: string) {
+		// convert base64/URLEncoded data component to raw binary data held in a string
+		var byteString;
+		if (dataURI.split(',')[0].indexOf('base64') >= 0)
+			byteString = atob(dataURI.split(',')[1]);
+		else
+			byteString = unescape(dataURI.split(',')[1]);
+		// separate out the mime component
+		var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+		// write the bytes of the string to a typed array
+		var ia = new Uint8Array(byteString.length);
+		for (var i = 0; i < byteString.length; i++) {
+			ia[i] = byteString.charCodeAt(i);
+		}
+		return new Blob([ia], {type:mimeString});
+	}
+
+	const getImageAsFile = () => {
+		let chart = chartRef.current;
+		if (chart) {
+			const dataUrl = chart.canvas.toDataURL('image/png');
+			const blob = dataURItoBlob(dataUrl);
+			return new File([blob as Blob], 'chart.png', { type: 'image/png' });
+		}
+		return null;
 	};
 
 	const chartData = {
@@ -196,7 +229,7 @@ const BarChart: React.FC<FacultyInteractionChartProps> = ({
 				onClose={() => setModalOpen(false)}
 			>
 				<Box sx={styleModal}>
-					<CreateTrelloCard trelloKey={trelloKey}/>
+					<CreateTrelloCard trelloKey={trelloKey} trelloApiKey={trelloApiKey} closeModal={closeModal} image={getImageAsFile}/>
 				</Box>
 			</Modal>
 		</>
@@ -215,3 +248,4 @@ const BarChart: React.FC<FacultyInteractionChartProps> = ({
 };
 
 export default BarChart;
+

@@ -37,7 +37,7 @@
 }
 
 .csvInput {
-	margin-top: 10px;
+	margin-bottom: 8px;
 	width: 100%;
 	border-radius: 6px;
 	padding: 2px;
@@ -307,4 +307,59 @@
 
 .noKey {
 	text-align: center;
+}
+
+.addCardButton {
+	margin-top: 10px;
+	width: fit-content;
+	border: 1px solid rgb(128, 128, 128);
+	color: rgb(128, 128, 128);
+	padding: 8px 8px;
+	font-size: 0.8rem;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.addCardButton:hover {
+	color: black;
+	border: 1px solid black;
+	transition-duration: 0.5s;
+}
+
+.addCardButtonDisabled {
+	margin-top: 10px;
+	width: fit-content;
+	border: 1px solid rgb(209, 209, 209);
+	color: rgb(195, 195, 195);
+	padding: 8px 8px;
+	font-size: 0.8rem;
+	border-radius: 4px;
+	cursor: default;
+}
+
+.selectSearchModal {
+	font-size: 0.8rem;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+.trelloInput {
+	width: 95%;
+	height: 30px;
+	border-radius: 6px;
+	border: 1px solid #d9d9d9;
+	margin-top: 8px;
+	font-size: 0.8rem;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.trelloDescription {
+	font-size: 0.7rem;
+	margin-top: 5px;
+}
+
+.trelloButtonContainer {
+	display: flex;
+	justify-content: flex-end;
 }

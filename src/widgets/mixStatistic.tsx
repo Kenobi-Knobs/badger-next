@@ -43,6 +43,7 @@ const MixStaistic = (props: any) => {
 	const [plot , setPlot] = React.useState<any>(<></>);
 	const [total, setTotal] = React.useState<any>(<></>);
 	const [trelloKey, setTrelloKey] = React.useState<string>('');
+	const [trelloApiKey, setTrelloApiKey] = React.useState<string>('');
 
 	const saveState = (remove: boolean) => {
 		if (remove) {
@@ -56,7 +57,8 @@ const MixStaistic = (props: any) => {
 				data: data,
 				options: options,
 				fileName: fileName,
-				trelloKey: trelloKey
+				trelloKey: trelloKey,
+				trelloApiKey: trelloApiKey,
 			};
 			localStorage.setItem('mixStatistic', JSON.stringify(state));
 			toast.success('Дані збережено', {
@@ -72,6 +74,7 @@ const MixStaistic = (props: any) => {
 			setData(state.data);
 			setOptions(state.options);
 			setTrelloKey(state.trelloKey);
+			setTrelloApiKey(state.trelloApiKey);
 			setDataLoaded(true);
 			setLoadedFromStorage(true);
 		}
@@ -146,7 +149,7 @@ const MixStaistic = (props: any) => {
 			);
 			setPlot(
 				<>
-					<BarChart data={plotData} trelloKey={trelloKey}/>
+					<BarChart data={plotData} trelloKey={trelloKey} trelloApiKey={trelloApiKey}/>
 				</>
 			);
 		} else if (options.facult != 'all' && options.kathedra == 'all') {
@@ -198,7 +201,7 @@ const MixStaistic = (props: any) => {
 			);
 			setPlot(
 				<>
-					<BarChart data={plotData} trelloKey={trelloKey}/>
+					<BarChart data={plotData} trelloKey={trelloKey} trelloApiKey={trelloApiKey}/>
 				</>
 			);
 		} else if (options.facult != 'all' && options.kathedra != 'all' && options.teacher == '') {
@@ -255,13 +258,13 @@ const MixStaistic = (props: any) => {
 			);
 			setPlot(
 				<>
-					<BarChart data={plotData} trelloKey={trelloKey}/>
+					<BarChart data={plotData} trelloKey={trelloKey} trelloApiKey={trelloApiKey}/>
 				</>
 			);
 		}
 
 		setStatisticLoading(false);
-	}, [options, data, trelloKey]);
+	}, [options, data, trelloKey, trelloApiKey]);
 
 	useEffect(() => {
 		generatePlot();
@@ -400,7 +403,18 @@ const MixStaistic = (props: any) => {
 						Trello
 					</div>
 					<div className={style.csvInputDescription}>
-						Для експорту в Trello додайте ключ авторизації
+						Для експорту в Trello додайте <a href='https://trello.com/power-ups/admin'>Ключ API</a> додатка:
+					</div>
+					<div className={style.csvInputContainer}>
+						<input
+							className={style.csvInput}
+							type='text'
+							value={trelloApiKey}
+							onChange={(e) => setTrelloApiKey(e.target.value)}
+						/>
+					</div>
+					<div className={style.csvInputDescription}>
+						А також ключ авторизації:
 					</div>
 					<div className={style.csvInputContainer}>
 						<input
